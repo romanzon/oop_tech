@@ -1,0 +1,94 @@
+/**
+* RatNum represents an immutable rational number.
+* It includes all of the elements of the set of rationals, as well
+* as the special "NaN" (not-a-number) element that results from
+* division by zero.
+*
+* The "NaN" element is special in many ways. Any arithmetic
+* operation (such as addition) involving "NaN" will return "NaN".
+* With respect to comparison operations, such as less-than, "NaN" is
+* considered equal to itself, and larger than all other rationals.
+*
+* Examples of RatNums include "-1/13", "53/7", "4", "NaN", and "0".
+*/
+public class RatNum {
+
+   private int numer;
+   private int denom;
+
+    // Abstraction Function:
+    // A RatNum r is NaN if r.denom = 0, (r.numer / r.denom)
+    // otherwise.
+    
+    // Representation invariant for every RatNum r:
+    // (r.denom >= 0) &&
+    // (r.denom > 0 ==> there does not exist integer i > 1 such that
+    // r.numer mod i = 0 and r.denom mod i = 0)
+    // (in other words: the denom. is always non-negative and if the
+    // denom. is non-zero, the fraction represented is in reduced form.)
+
+/**
+* Constructs a new RatNum.
+* @effects Constructs a new RatNum = n.
+*/
+public RatNum(int n) {
+numer = n;
+denom = 1;
+checkRep();
+}
+
+
+/**
+* Constructs a new RatNum.
+* @effects If d = 0, constructs a new RatNum = NaN. Else
+* constructs a new RatNum = (n / d).
+*/
+public RatNum(int n, int d) {
+// …
+}
+/**
+* Checks to see if the representation invariant is being violated.
+* @throws AssertionError if representation invariant is violated.
+
+*/
+private void checkRep() {
+assert denom >= 0 :
+"Denominator of a RatNum cannot be less than zero";
+
+if (denom > 0) {
+int thisGcd = gcd(numer, denom);
+assert (thisGcd == 1 || thisGcd == -1) :
+"RatNum not in lowest form";
+}
+}
+/**
+* Returns the greatest common divisor of 'a' and 'b'.
+* @requires b != 0
+* @return d such that a % d = 0 and b % d = 0
+*/
+private static int gcd(int a, int b) {
+// …
+}
+
+
+/**
+* @requires arg != null
+* @return a new RatNum equal to (this / arg).
+* If arg is zero, or if either argument is NaN, then returns NaN.
+*/
+public RatNum div(RatNum arg) {
+// (a/b) / (x/y) = ay/bx
+checkRep();
+if (arg.isNaN()) {
+checkRep();
+return arg;
+}
+else {
+checkRep();
+return new RatNum(this.numer*arg.denom, this.denom*arg.numer);
+}
+}
+
+
+//…
+}
