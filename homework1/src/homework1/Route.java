@@ -35,8 +35,15 @@ public class Route {
 
 	
  	// TODO Write abstraction function and representation invariant
-
-
+	private final GeoPoint start;  
+	private final GeoPoint end;
+	private final double start_heading; //angle direction 
+	private final double end_heading; 	//angle direction 
+	private final ArrayList<GeoFeature> geo_features; 
+	private final ArrayList<GeoSegment> geo_segments; 
+	private final double length;
+	private final GeoSegment last_geo_segmnet;  
+	
   	/**
   	 * Constructs a new Route.
      * @requires gs != null
@@ -47,7 +54,15 @@ public class Route {
      *          r.end = gs.p2
      **/
   	public Route(GeoSegment gs) {
-  		// TODO Implement this constructor
+  		this.start = gs.getP1(); 
+  		this.end = gs.getP2(); 
+  		this.start_heading = gs.getHeading(); 
+  		this.end_heading = gs.getHeading(); 
+  		this.geo_features = new ArrayList<GeoFeature>();
+  		this.geo_segments = new ArrayList<GeoSegment>();
+  		this.geo_segments.add(gs);
+  		this.length = gs.getLength();
+  		this
   	}
 
 
@@ -56,7 +71,7 @@ public class Route {
      * @return location of the start of the route.
      **/
   	public GeoPoint getStart() {
-  		// TODO Implement this method
+  		return this.start;  
   	}
 
 
@@ -65,7 +80,7 @@ public class Route {
      * @return location of the end of the route.
      **/
   	public GeoPoint getEnd() {
-  		// TODO Implement this method
+  		return this.end; 
   	}
 
 
@@ -75,7 +90,7 @@ public class Route {
    	 *         route, in degrees.
    	 **/
   	public double getStartHeading() {
-  		// TODO Implement this method
+  		return this.start_heading; 
   	}
 
 
@@ -85,7 +100,7 @@ public class Route {
      *         route, in degrees.
      **/
   	public double getEndHeading() {
-  		// TODO Implement this method
+  		return this.end_heading; 
   	}
 
 
@@ -97,6 +112,7 @@ public class Route {
    	 **/
   	public double getLength() {
   		// TODO Implement this method
+  		
   	}
 
 
