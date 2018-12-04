@@ -41,8 +41,6 @@ package homework1;
  **/
 public class GeoSegment  {
 
-	
-  	// TODO Write abstraction function and representation invariant
 	private final String m_name;
 	private final GeoPoint m_p1;
 	private final GeoPoint m_p2;
@@ -55,7 +53,6 @@ public class GeoSegment  {
      * @effects constructs a new GeoSegment with the specified name and endpoints.
      **/
   	public GeoSegment(String name, GeoPoint p1, GeoPoint p2) {
-  		// TODO Implement this method
   		this.m_name = name;
   		this.m_p1 = p1;
   		this.m_p2 = p2;
@@ -73,7 +70,6 @@ public class GeoSegment  {
      *         && gs.p1 = this.p2 && gs.p2 = this.p1
      **/
   	public GeoSegment reverse() {
-  		// TODO Implement this method
   		GeoSegment reverse = new GeoSegment(this.m_name, this.m_p2, this.m_p1);
   		return reverse;
   	}
@@ -84,7 +80,6 @@ public class GeoSegment  {
      * @return the name of this GeoSegment.
      */
   	public String getName() {
-  		// TODO Implement this method
   		return this.m_name;
   	}
 
@@ -94,7 +89,6 @@ public class GeoSegment  {
      * @return first endpoint of the segment.
      */
   	public GeoPoint getP1() {
-  		// TODO Implement this method
   		return this.m_p1;
   	}
 
@@ -104,7 +98,6 @@ public class GeoSegment  {
      * @return second endpoint of the segment.
      */
   	public GeoPoint getP2() {
-  		// TODO Implement this method
   		return this.m_p2;
   	}
 
@@ -115,7 +108,6 @@ public class GeoSegment  {
      *         Technion approximation.
      */
   	public double getLength() {
-  		// TODO Implement this method
   		return this.m_length;
   	}
 
@@ -127,7 +119,6 @@ public class GeoSegment  {
      *         flat-surface, near the Technion approximation.
      **/
   	public double getHeading() {
-  		// TODO Implement this method
   		return this.m_heading;
   	}
 
@@ -138,7 +129,6 @@ public class GeoSegment  {
      *         && gs.name = this.name && gs.p1 = this.p1 && gs.p2 = this.p2
    	 **/
   	public boolean equals(Object gs) {
-  		// TODO Implement this method
   		if (gs == null)
   			return false;
   		
@@ -165,7 +155,6 @@ public class GeoSegment  {
   	public int hashCode() {
     	// This implementation will work, but you may want to modify it 
     	// for improved performance. 
-
     	return this.getP1().hashCode()*this.getP2().hashCode();
   	}
 
@@ -175,7 +164,6 @@ public class GeoSegment  {
      * @return a string representation of this.
      **/
   	public String toString() {
-  		// TODO Implement this method
   		String str = "(" + this.m_name + ", " + this.m_p1.toString() + ", " + this.m_p2.toString() + ")";
   		return str;
   	}
