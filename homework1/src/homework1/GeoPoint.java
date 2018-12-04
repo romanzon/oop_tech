@@ -231,8 +231,8 @@ public class GeoPoint {
      * @return a string representation of this GeoPoint.
      **/
   	public String toString() {
-  		String str = "(" + Double.toString(m_latitude/1000000) + 
-  					 ", " + Double.toString(m_longitude/1000000) + ").";
+  		String str = "(" + Double.toString(m_latitude/1000000.0) + 
+  					 ", " + Double.toString(m_longitude/1000000.0) + ")";
   		return str;
   	}
 
