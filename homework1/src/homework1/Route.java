@@ -59,12 +59,54 @@ public class Route {
   		this.start_heading = gs.getHeading(); 
   		this.end_heading = gs.getHeading(); 
   		this.geo_features = new ArrayList<GeoFeature>();
+  		this.geo_features.add(gs); 
   		this.geo_segments = new ArrayList<GeoSegment>();
   		this.geo_segments.add(gs);
   		this.length = gs.getLength();
-  		this
+  		this.last_geo_segment = gs; 
   	}
 
+  	/**
+  	 * Construct a new Route by GeoSegments  
+  	 * @requires geoSegments != null 
+  	 */
+  	private Route(ArrayList<GeoSegment> geo_segments)
+  	{
+  		this.start = geo_segments.get(0).getP1();
+  		this.end = geo_segments.get(geo_segments.size()-1).getP2();
+  		this.start_heading = geo_segments.get(0).getHeading(); 
+  		this.end_heading = geo_segments.get(geo_segments.size()-1).getHeading(); 
+  		this.geo_features = null;
+  		double length_tmp = 0;
+  		for (GeoSegment geoSegment : geo_segments) 
+  		{
+  			length_tmp +=geoSegment.getLength();
+		}
+  		this.length = length_tmp;
+  		this.geo_segments = geo_segments;
+  	}
+  	
+  	/**
+  	 * Construct a new Route by GeoFeatures  
+  	 * @requires geoFeatures != null 
+  	 */
+  	private Route(ArrayList<GeoFeature> geo_features)
+  	{
+  		this.start = geo_features.get(0).getStart();
+  		this.end = geo_features.get(geo_features.size()-1).getEnd();
+  		this.start_heading = geo_features.get(0).getStartHeading(); 
+  		this.end_heading = geo_features.get(geo_features.size()-1).getEndHeading(); 
+  		this.geo_segments = null;
+  		double length_tmp = 0;
+  		for (GeoSegment geoFeature : geo_features) 
+  		{
+  			length_tmp +=geoFeature.getLength();
+		}
+  		this.length = length_tmp;
+  		this.geo_features = geo_features;
+  	}
+  	
+  	
 
     /**
      * Returns location of the start of the route.
@@ -111,8 +153,7 @@ public class Route {
      *         traverse the route. These values are not necessarily equal.
    	 **/
   	public double getLength() {
-  		// TODO Implement this method
-  		
+  		return this.length; 
   	}
 
 
