@@ -145,10 +145,20 @@ public class RouteFormatterGUI extends JPanel {
 		DefaultListModel<GeoSegment> model =
 				(DefaultListModel<GeoSegment>)(this.lstSegments.getModel());
 		
-		// TODO Write the body of this method
+		if (route == null)
+		{
+			route = new Route(segment);
+			model.addElement(segment);
+		}
+		else if (route.getEnd().equals(segment.getP1()))
+		{
+			route = route.addSegment(segment);
+			model.addElement(segment);
+		}
+		this.lstSegments.setModel(model);
 	}
-
-
+	
+	
     public static void main(String[] args) {
 		JFrame frame = new JFrame("Route Formatter GUI");
 		Container contentPane = frame.getContentPane();

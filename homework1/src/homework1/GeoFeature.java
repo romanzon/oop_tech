@@ -47,7 +47,6 @@ public class GeoFeature {
 	//   http://docs.oracle.com/javase/8/docs/api/java/util/List.html
 	
 	
-  	// TODO Write abstraction function and representation invariant
 	private final GeoPoint m_start, m_end;
 	private final double m_start_heading, m_end_heading;
 	private final ArrayList<GeoSegment> m_geo_segments;
@@ -65,7 +64,6 @@ public class GeoFeature {
      *          r.end = gs.p2
      **/
   	public GeoFeature(GeoSegment gs) {
-  		// TODO Implement this constructor
   		this.m_name = gs.getName();
   		this.m_start_heading = gs.getHeading();
   		this.m_end_heading = gs.getHeading();
@@ -101,7 +99,6 @@ public class GeoFeature {
       * @return name of geographic feature
       */
   	public String getName() {
-  		// TODO Implement this method
   		return this.m_name;
   	}
 
@@ -111,7 +108,6 @@ public class GeoFeature {
      * @return location of the start of the geographic feature.
      */
   	public GeoPoint getStart() {
-  		// TODO Implement this method
   		return this.m_start;
   	}
 
@@ -121,7 +117,6 @@ public class GeoFeature {
      * @return location of the end of the geographic feature.
      */
   	public GeoPoint getEnd() {
-  		// TODO Implement this method
   		return this.m_end;
   	}
 
@@ -132,7 +127,6 @@ public class GeoFeature {
      *         geographic feature, in degrees.
      */
   	public double getStartHeading() {
-  		// TODO Implement this method
   		return this.m_start_heading;
   	}
 
@@ -143,7 +137,6 @@ public class GeoFeature {
      *         geographic feature, in degrees.
      */
   	public double getEndHeading() {
-  		// TODO Implement this method
   		return this.m_end_heading;
   	}
 
@@ -156,7 +149,6 @@ public class GeoFeature {
      *         values are not necessarily equal.
      */
   	public double getLength() {
-  		// TODO Implement this method
   		return this.m_length;
   	}
 
@@ -171,7 +163,6 @@ public class GeoFeature {
      *    	   r.length = this.length + gs.length
      **/
   	public GeoFeature addSegment(GeoSegment gs) {
-  		// TODO Implement this method
   		@SuppressWarnings("unchecked")
 		ArrayList<GeoSegment> geo_segments = (ArrayList<GeoSegment>) this.m_geo_segments.clone();
   		geo_segments.add(gs);
@@ -198,7 +189,6 @@ public class GeoFeature {
      * @see homework1.GeoSegment
      */
   	public Iterator<GeoSegment> getGeoSegments() {
-  		// TODO Implement this method
   		return this.m_geo_segments.iterator();
   	}
 
@@ -210,7 +200,6 @@ public class GeoFeature {
      *          the same elements in the same order).
      **/
   	public boolean equals(Object o) {
-  		// TODO Implement this method
   		if (o == null)
   			return false;
   		if (o instanceof GeoFeature == false)
@@ -243,7 +232,6 @@ public class GeoFeature {
    	 * @return a string representation of this.
      **/
   	public String toString() {
-  		// TODO Implement this method
   		String str = this.m_name + ": " + this.m_start.toString() + " --> " + this.m_end.toString();
   		return str;
   	}

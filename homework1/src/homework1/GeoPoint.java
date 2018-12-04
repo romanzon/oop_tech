@@ -1,7 +1,5 @@
 package homework1;
 
-import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
-
 /**
  * A GeoPoint is a point on the earth. GeoPoints are immutable.
  * <p>
@@ -66,8 +64,6 @@ public class GeoPoint {
 	// and distance computations). Because of this, you should consider 
 	// using ints for your internal representation of GeoPoint. 
 
-  	
-  	// TODO Write abstraction function and representation invariant
   	private final int m_latitude;
   	private final int m_longitude;
 
@@ -77,10 +73,10 @@ public class GeoPoint {
    	 *           of a degree is valid such that:
    	 *           (MIN_LATITUDE <= latitude <= MAX_LATITUDE) and
    	 **/
-  	private static double diff_latitude_km(int latitude0, int latitude1)
+  	private double diff_latitude_to_km(int latitude)
   	{
   		// Compute the difference between the latitude (in degree)
-  		double diff_latitude = (latitude0 - latitude1)/1000000;
+  		double diff_latitude = (latitude - this.m_latitude)/1000000.0;
   		// Move difference to km
   		double diff_latitude_km	= diff_latitude*GeoPoint.KM_PER_DEGREE_LATITUDE;  		
   		return diff_latitude_km;
@@ -92,10 +88,10 @@ public class GeoPoint {
    	 *           of a degree is valid such that:
    	 *           (MIN_LATITUDE <= latitude <= MAX_LATITUDE) and
    	 **/
-  	private static double diff_longitude_km(int longitude0, int longitude1)
+  	private double diff_longitude_to_km(int longitude)
   	{	
 		// Compute the difference between the longitude (in degree)
-		double diff_longitude = (longitude0 - longitude1)/1000000;
+		double diff_longitude = (longitude - this.m_longitude)/1000000.0;
 		// Move difference to km
 		double diff_longitude_km = diff_longitude*GeoPoint.KM_PER_DEGREE_LONGITUDE; 		
 		return diff_longitude_km;
@@ -111,7 +107,6 @@ public class GeoPoint {
      *          given in millionths of degrees.
    	 **/
   	public GeoPoint(int latitude, int longitude) {
-  		// TODO Implement this constructor
   		this.m_latitude = latitude;
   		this.m_longitude = longitude;
   	}
@@ -122,7 +117,6 @@ public class GeoPoint {
      * @return the latitude of this in millionths of degrees.
      */
   	public int getLatitude() {
-  		// TODO Implement this method
   		return this.m_latitude;
   	}
 
@@ -132,7 +126,6 @@ public class GeoPoint {
      * @return the latitude of this in millionths of degrees.
      */
   	public int getLongitude() {
-  		// TODO Implement this method
   		return this.m_longitude;
   	}
 
@@ -144,11 +137,9 @@ public class GeoPoint {
      *         the Technion approximation.
      **/
   	public double distanceTo(GeoPoint gp) {
-  		// TODO Implement this method
-
   		// Compute distance using Pitaguras
-  		double distance = Math.sqrt(Math.pow(GeoPoint.diff_latitude_km(this.getLatitude(), gp.getLatitude()),2) + 
-  						  		    Math.pow(GeoPoint.diff_longitude_km(this.getLongitude(), gp.getLongitude()), 2));
+  		double distance = Math.sqrt(Math.pow(this.diff_latitude_to_km(gp.getLatitude()),2) + 
+  						  		    Math.pow(this.diff_longitude_to_km(gp.getLongitude()), 2));
   		return distance;
   	}
 
@@ -172,12 +163,23 @@ public class GeoPoint {
 		 // mathematical convention, "east" is 0 degrees, and degrees
 		 // increase in the counterclockwise direction. 
 		 
-  		// TODO Implement this method
-  		double diff_latitude = GeoPoint.diff_latitude_km(this.getLatitude(), gp.getLatitude());
-  		double diff_longitude = GeoPoint.diff_longitude_km(this.getLongitude(), gp.getLongitude());
+  		double diff_latitude = this.diff_latitude_to_km(gp.getLatitude());
+  		double diff_longitude = this.diff_longitude_to_km(gp.getLongitude());
   		
+  		if (diff_latitude == 0)
+  			if (diff_longitude > 0)
+				return 90;
+  			else
+  				return 270;
+  		
+  		if (diff_longitude == 0)
+  			if (diff_latitude > 0)
+  				return 0;
+  			else
+  				return 180;
+  			
   		// Compute heading using arc tan
-  		double h = Math.atan(Math.abs(diff_longitude/diff_latitude))*360/Math.PI;
+  		double h = Math.atan(Math.abs(diff_longitude/diff_latitude))*180/Math.PI;
   		
   		if ((diff_longitude > 0) && (diff_latitude < 0))
   			h = h + 90;
@@ -195,7 +197,6 @@ public class GeoPoint {
      * 		   gp.latitude = this.latitude && gp.longitude = this.longitude
      **/
   	public boolean equals(Object gp) {
-  		// TODO Implement this method
   		if (gp == null)
   			return false;
   		
@@ -230,9 +231,8 @@ public class GeoPoint {
      * @return a string representation of this GeoPoint.
      **/
   	public String toString() {
-  		// TODO Implement this method
-  		String str = "(" + Double.toString(m_latitude/1000000) + 
-  					 ", " + Double.toString(m_longitude/1000000) + ").";
+  		String str = "(" + Double.toString(m_latitude/1000000.0) + 
+  					 ", " + Double.toString(m_longitude/1000000.0) + ")";
   		return str;
   	}
 
