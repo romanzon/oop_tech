@@ -164,7 +164,7 @@ public class GeoSegment  {
      * @return a string representation of this.
      **/
   	public String toString() {
-  		String str = "(" + this.m_name + ", " + this.m_p1.toString() + ", " + this.m_p2.toString() + ")";
+  		String str = "(\"" + this.m_name + "\", " + this.m_p1.toString() + ", " + this.m_p2.toString() + ")";
   		return str;
   	}
 
