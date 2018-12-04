@@ -53,7 +53,7 @@ public class Route {
      *          r.start = gs.p1 &&
      *          r.end = gs.p2
      **/
-  	public Route(GeoSegment gs) {
+  	public Route(GeoSegment gs) { 
   		this.start = gs.getP1(); 
   		this.end = gs.getP2(); 
   		this.start_heading = gs.getHeading(); 
