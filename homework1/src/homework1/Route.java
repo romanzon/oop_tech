@@ -1,5 +1,6 @@
 package homework1;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
@@ -34,7 +35,6 @@ import java.util.Iterator;
 public class Route {
 
 	
- 	// TODO Write abstraction function and representation invariant
 	private final GeoPoint start;  
 	private final GeoPoint end;
 	private final double start_heading; //angle direction 
@@ -42,7 +42,6 @@ public class Route {
 	private final ArrayList<GeoFeature> geo_features; 
 	private final ArrayList<GeoSegment> geo_segments; 
 	private final double length;
-	private final GeoSegment last_geo_segmnet;  
 	
   	/**
   	 * Constructs a new Route.
@@ -59,32 +58,47 @@ public class Route {
   		this.start_heading = gs.getHeading(); 
   		this.end_heading = gs.getHeading(); 
   		this.geo_features = new ArrayList<GeoFeature>();
-  		this.geo_features.add(gs); 
+  		this.geo_features.add(new GeoFeature(gs)); 
   		this.geo_segments = new ArrayList<GeoSegment>();
   		this.geo_segments.add(gs);
   		this.length = gs.getLength();
-  		this.last_geo_segment = gs; 
   	}
 
   	/**
   	 * Construct a new Route by GeoSegments  
-  	 * @requires geoSegments != null 
+  	 * @requires geoSegments != null && gs.p1 = this.end &&
+     *      	 for all integers i
+     *           (0 <= i < geo_segments.length-1 => (geo_segments[i].p2   == geo_segments[i+1].p1))
   	 */
-  	private Route(ArrayList<GeoSegment> geo_segments , ArrayList<Feature> geo_features)
+  	private Route(ArrayList<GeoSegment> geo_segments)
   	{
   		this.start = geo_segments.get(0).getP1();
   		this.end = geo_segments.get(geo_segments.size()-1).getP2();
   		this.start_heading = geo_segments.get(0).getHeading(); 
   		this.end_heading = geo_segments.get(geo_segments.size()-1).getHeading(); 
-  		this.last_geo_segment = geo_segments.get(geo_segments.size()-1); 
+  		
 		double length_tmp = 0;
+		GeoFeature geoFeature = null;
+		this.geo_segments = new ArrayList<GeoSegment>();
+		this.geo_features = new ArrayList<GeoFeature>();
+		
   		for (GeoSegment geoSegment : geo_segments) 
   		{
-  			length_tmp +=geoSegment.getLength();
+  			length_tmp += geoSegment.getLength();
+  			this.geo_segments.add(geoSegment);
+  			if (geoFeature == null)
+  				geoFeature = new GeoFeature(geoSegment); 		// Add the first geoSegment
+  			else if (geoFeature.getName().equals(geoSegment.getName()))
+  				geoFeature = geoFeature.addSegment(geoSegment); // Add the next segment when the name equals
+  			else
+  			{
+  				this.geo_features.add(geoFeature);				// Add the old feature
+  				geoFeature = new GeoFeature(geoSegment);		// Create new feature with a different name
+  			}
 		}
+  		this.geo_features.add(geoFeature);						// Add the last feature
+  		
   		this.length = length_tmp;
-  		this.geo_segments = geo_segments;
-		this.geo_features = geo_features; 
   	}
 
     /**
@@ -146,6 +160,7 @@ public class Route {
      *         r.length = this.length + gs.length
      **/
   	public Route addSegment(GeoSegment gs) {
+		@SuppressWarnings("unchecked")
 		ArrayList<GeoSegment> geo_segments = (ArrayList<GeoSegment>) this.geo_segments.clone();
 		geo_segments.add(gs);
   		return new Route(geo_segments);
@@ -189,7 +204,7 @@ public class Route {
      * @see homework1.GeoSegment
      **/
   	public Iterator<GeoSegment> getGeoSegments() {
-		return this.geo_features.getGeoSegments(); 
+		return this.geo_segments.iterator(); 
   	}
 
 
@@ -200,16 +215,17 @@ public class Route {
      *          the same elements in the same order).
      **/
   	public boolean equals(Object o) {
+  		if (o == null)
+  			return false;
+  		
 		if (o instanceof Route == false)
   			return false;
 		
-		if(this.getGeoFeatures().equals(o.getGeoFeatures()))
-			retrun false; 
+		Route o1 = (Route) o;
+		if (!this.getGeoFeatures().equals(o1.getGeoFeatures()))
+			return true; 
 		
-		return true; 
-		
-		//if(this.getGeoSegments().equals(o.getGeoSegments()))
-		//	retrun false; 
+		return true;
   	}
 
 
@@ -220,7 +236,7 @@ public class Route {
   	public int hashCode() {
     	// This implementation will work, but you may want to modify it
     	// for improved performance.
-	int sum = 0;
+  		int sum = 0;
     	for (GeoSegment geo_segment : this.geo_segments) {
 			sum +=geo_segment.hashCode();
 		}
@@ -233,9 +249,12 @@ public class Route {
      * @return a string representation of this.
      **/
   	public String toString() {	
-		String str; 
+		String str = null; 
 		for (GeoFeature geo_feature : this.geo_features)
-			str +=geo_feature.toString(); 
+			if (str == null)
+				str = geo_feature.toString();
+			else
+				str += " " + geo_feature.toString(); 
 		
 		return str; 		
   	}

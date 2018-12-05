@@ -76,7 +76,10 @@ public class GeoFeature {
   
   	/**
   	 * Construct a new GeoFeature by geo_segments
-  	 * @requires geo_segments != null && geo_segments.name are identical
+  	 * @requires geo_segments != null &&
+     *      	 for all integers i
+     *           (0 <= i < geo_segments.length-1 => (geo_segments[i].name == geo_segments[i+1].name &&
+     *                                    			 geo_segments[i].p2   == geo_segments[i+1].p1))
   	 */
   	private GeoFeature(ArrayList<GeoSegment> geo_segments)
   	{
@@ -206,7 +209,7 @@ public class GeoFeature {
   			return false;
   		
   		GeoFeature o1 = (GeoFeature) o;
-  		if (this.getGeoSegments().equals(o1.getGeoSegments()))
+  		if (!this.getGeoSegments().equals(o1.getGeoSegments()))
   			return false;
   		return true;
   	}
