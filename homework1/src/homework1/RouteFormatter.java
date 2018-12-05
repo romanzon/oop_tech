@@ -38,7 +38,12 @@ public abstract class RouteFormatter {
      * @return A newline-terminated <tt>String</tt> that gives directions
      * 		   on how to traverse this geographic feature.
      */
-  	public abstract String computeLine(GeoFeature geoFeature, double origHeading);
+  	public abstract String computeLine(GeoFeature geoFeature, double origHeading) {
+  		
+  		return getTurnString( origHeading ,geoFeature.getStartHeading() );
+  		
+  	}
+  		
 
 
   	/**
@@ -61,7 +66,29 @@ public abstract class RouteFormatter {
      * and likewise for left turns.
      */
   	protected String getTurnString(double origHeading, double newHeading) {
-  		// TODO Implement this method
+  		double direction; 
+  		
+  		direction = newHeading - origHeading; 
+ 
+  		
+  		if(direction>(-10) && direction<10 ) {
+  			return "Continue";
+  		} else if (direction>=10 && direction<60) {
+  			return "Turn slight right"; 
+  		} else if (direction>=60 && direction<120) {
+  			return "Turn right"; 
+  		} else if(direction>=120 && direction<179) {
+  			return "Turn sharp right"; 
+  		} else if(direction<=(-10) && direction>(-60)) {
+  			return "Turn slight left"; 
+  		} else if(direction<=(-60) && direction>(-120)) {
+  			return "Turn left"; 
+  		} else if(direection<=(-120) && direction>(-179)) {
+  			return "Turn sharp left"; 
+  		} else if(direction>=179 || direction<=(-179)) {
+  			return "U-turn"; 
+  		}
+  			
   	}
 
 }
