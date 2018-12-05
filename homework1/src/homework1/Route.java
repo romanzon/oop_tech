@@ -70,43 +70,22 @@ public class Route {
   	 * Construct a new Route by GeoSegments  
   	 * @requires geoSegments != null 
   	 */
-  	private Route(ArrayList<GeoSegment> geo_segments)
+  	private Route(ArrayList<GeoSegment> geo_segments , ArrayList<Feature> geo_features)
   	{
   		this.start = geo_segments.get(0).getP1();
   		this.end = geo_segments.get(geo_segments.size()-1).getP2();
   		this.start_heading = geo_segments.get(0).getHeading(); 
   		this.end_heading = geo_segments.get(geo_segments.size()-1).getHeading(); 
-  		this.geo_features = null;
-  		double length_tmp = 0;
+  		this.last_geo_segment = geo_segments.get(geo_segments.size()-1); 
+		double length_tmp = 0;
   		for (GeoSegment geoSegment : geo_segments) 
   		{
   			length_tmp +=geoSegment.getLength();
 		}
   		this.length = length_tmp;
   		this.geo_segments = geo_segments;
+		this.geo_features = geo_features; 
   	}
-  	
-  	/**
-  	 * Construct a new Route by GeoFeatures  
-  	 * @requires geoFeatures != null 
-  	 */
-  	private Route(ArrayList<GeoFeature> geo_features)
-  	{
-  		this.start = geo_features.get(0).getStart();
-  		this.end = geo_features.get(geo_features.size()-1).getEnd();
-  		this.start_heading = geo_features.get(0).getStartHeading(); 
-  		this.end_heading = geo_features.get(geo_features.size()-1).getEndHeading(); 
-  		this.geo_segments = null;
-  		double length_tmp = 0;
-  		for (GeoSegment geoFeature : geo_features) 
-  		{
-  			length_tmp +=geoFeature.getLength();
-		}
-  		this.length = length_tmp;
-  		this.geo_features = geo_features;
-  	}
-  	
-  	
 
     /**
      * Returns location of the start of the route.
@@ -167,9 +146,10 @@ public class Route {
      *         r.length = this.length + gs.length
      **/
   	public Route addSegment(GeoSegment gs) {
-  		// TODO Implement this method
+		ArrayList<GeoSegment> geo_segments = (ArrayList<GeoSegment>) this.geo_segments.clone();
+		geo_segments.add(gs);
+  		return new Route(geo_segments);
   	}
-
 
     /**
      * Returns an Iterator of GeoFeature objects. The concatenation
@@ -190,7 +170,7 @@ public class Route {
      * @see homework1.GeoFeature
      **/
   	public Iterator<GeoFeature> getGeoFeatures() {
-  		// TODO Implement this method
+  		return this.geo_features.iterator(); 
   	}
 
 
@@ -209,7 +189,7 @@ public class Route {
      * @see homework1.GeoSegment
      **/
   	public Iterator<GeoSegment> getGeoSegments() {
-  		// TODO Implement this method
+		return this.geo_features.getGeoSegments(); 
   	}
 
 
@@ -220,7 +200,16 @@ public class Route {
      *          the same elements in the same order).
      **/
   	public boolean equals(Object o) {
-  		// TODO Implement this method
+		if (o instanceof Route == false)
+  			return false;
+		
+		if(this.getGeoFeatures().equals(o.getGeoFeatures()))
+			retrun false; 
+		
+		return true; 
+		
+		//if(this.getGeoSegments().equals(o.getGeoSegments()))
+		//	retrun false; 
   	}
 
 
@@ -231,16 +220,24 @@ public class Route {
   	public int hashCode() {
     	// This implementation will work, but you may want to modify it
     	// for improved performance.
-
-    	return 1;
-  	}
+	int sum = 0;
+    	for (GeoSegment geo_segment : this.geo_segments) {
+			sum +=geo_segment.hashCode();
+		}
+    	return sum;
+	}
 
 
     /**
      * Returns a string representation of this.
      * @return a string representation of this.
      **/
-  	public String toString() {
+  	public String toString() {	
+		String str; 
+		for (GeoFeature geo_feature : this.geo_features)
+			str +=geo_feature.toString(); 
+		
+		return str; 		
   	}
 
 }
