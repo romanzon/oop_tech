@@ -1,7 +1,5 @@
 package homework1;
 
-import java.text.DecimalFormat;
-
 /**
  * A WalkingDirections class knows how to create a textual description of
  * directions from one location to another suitable for a pedestrian.
@@ -25,7 +23,9 @@ import java.text.DecimalFormat;
  * newline and should include no extra spaces other than those shown above.
  **/
 public class WalkingRouteFormatter extends RouteFormatter {
-
+	private static final float MIN_PER_KM = 20; // walking speed
+	
+	
   	/**
      * Computes a single line of a multi-line directions String that
      * represents the instructions for walking along a single geographic
@@ -60,6 +60,9 @@ public class WalkingRouteFormatter extends RouteFormatter {
 		// and at:
 		// http://docs.oracle.com/javase/8/docs/api/java/text/DecimalFormat.html
 					 
-  		// TODO Implement this method
+  		int time = (int) Math.round(geoFeature.getLength()*MIN_PER_KM);
+  		String str = this.getTurnString(origHeading, geoFeature.getStartHeading()) + " onto " + geoFeature.getName() 
+  					+ " and walk for " + Integer.toString(time) + " minutes.\n";
+  		return str;
   	}
 }

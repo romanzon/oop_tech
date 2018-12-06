@@ -145,17 +145,26 @@ public class RouteFormatterGUI extends JPanel {
 		DefaultListModel<GeoSegment> model =
 				(DefaultListModel<GeoSegment>)(this.lstSegments.getModel());
 		
+		// Update GeoSegment scroll list
 		if (route == null)
-		{
+		{	// Add the first segment
 			route = new Route(segment);
 			model.addElement(segment);
 		}
 		else if (route.getEnd().equals(segment.getP1()))
-		{
+		{	// Add the following segment
 			route = route.addSegment(segment);
 			model.addElement(segment);
 		}
 		this.lstSegments.setModel(model);
+		
+		// Update Walking Direction text list
+		RouteFormatter routeFormmater = new WalkingRouteFormatter();
+		this.txtWalkingDirections.setText(routeFormmater.computeDirections(route, 0));
+		
+		// Update Driving Direction text list
+		routeFormmater = new DrivingRouteFormatter();
+		this.txtDrivingDirections.setText(routeFormmater.computeDirections(route, 0));
 	}
 	
 	

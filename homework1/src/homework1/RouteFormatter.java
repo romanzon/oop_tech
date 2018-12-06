@@ -1,5 +1,6 @@
 package homework1;
 
+import java.util.Iterator;
 
 /**
  * A RouteFormatter class knows how to create a textual description of
@@ -24,7 +25,17 @@ public abstract class RouteFormatter {
 		// feature in this route and concatenate the results into a single
 		// String.
   		
-  		// TODO Implement this method
+  		Iterator<GeoFeature> geoFeatures = route.getGeoFeatures();
+  		double origHeading = 0;
+  		String directionsStr = ""; 
+  		while (geoFeatures.hasNext())
+  		{
+  			GeoFeature geoFeature = geoFeatures.next();
+  			directionsStr += this.computeLine(geoFeature, origHeading); // Add the current line string
+  			origHeading = geoFeature.getEndHeading();  // Put the end heading as the next origin heading
+  		}
+  		
+  		return directionsStr;
   	}
 
 
@@ -38,12 +49,7 @@ public abstract class RouteFormatter {
      * @return A newline-terminated <tt>String</tt> that gives directions
      * 		   on how to traverse this geographic feature.
      */
-  	public abstract String computeLine(GeoFeature geoFeature, double origHeading) {
-  		
-  		return getTurnString( origHeading ,geoFeature.getStartHeading() );
-  		
-  	}
-  		
+  	public abstract String computeLine(GeoFeature geoFeature, double origHeading);
 
 
   	/**
@@ -69,7 +75,10 @@ public abstract class RouteFormatter {
   		double direction; 
   		
   		direction = newHeading - origHeading; 
- 
+  		if (direction > 180)
+  			direction = direction - 360;
+  		else if (direction < -180)
+  			direction = direction + 360;
   		
   		if(direction>(-10) && direction<10 ) {
   			return "Continue";
@@ -83,12 +92,9 @@ public abstract class RouteFormatter {
   			return "Turn slight left"; 
   		} else if(direction<=(-60) && direction>(-120)) {
   			return "Turn left"; 
-  		} else if(direection<=(-120) && direction>(-179)) {
+  		} else if(direction<=(-120) && direction>(-179)) {
   			return "Turn sharp left"; 
-  		} else if(direction>=179 || direction<=(-179)) {
-  			return "U-turn"; 
-  		}
-  			
+  		} else
+  			return "U-turn";  			
   	}
-
 }

@@ -1,7 +1,5 @@
 package homework1;
 
-import java.text.DecimalFormat;
-
 /**
  * The DrivingDirections class creates a textual description of directions
  * for traversing a route that are suitable for a driver of a vehicle.
@@ -58,7 +56,9 @@ public class DrivingRouteFormatter extends RouteFormatter {
   		// and at:
   		// http://docs.oracle.com/javase/8/docs/api/java/text/DecimalFormat.html
 		   		
-  		// TODO Implement this method
+  		String str = this.getTurnString(origHeading, geoFeature.getStartHeading()) + " onto " + geoFeature.getName() 
+  					+ " and go " + Double.toString(Math.round(geoFeature.getLength()*10)/10.0) + " kilometers.\n";
+  		return str;
   	}
 
 }
