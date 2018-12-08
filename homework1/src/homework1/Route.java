@@ -35,13 +35,26 @@ import java.util.Iterator;
 public class Route {
 
 	
-	private final GeoPoint start;  
-	private final GeoPoint end;
-	private final double start_heading; //angle direction 
-	private final double end_heading; 	//angle direction 
+	/** location of the start of the route **/
+	private final GeoPoint start;  		
+	
+	/** location of the end of the route **/
+	private final GeoPoint end;			
+	
+	/** direction of travel at the start of the route, in degrees **/
+	private final double start_heading; 
+	
+	/** direction of travel at the end of the route, in degrees **/
+	private final double end_heading;
+	
+	/** a sequence of geographic features that make up this Route **/
 	private final ArrayList<GeoFeature> geo_features; 
+	
+	/** a sequence of segments that make up this Route **/
 	private final ArrayList<GeoSegment> geo_segments; 
-	private final double length;
+	
+	/** total length of the route, in kilometers **/
+	private final double length;		
 	
   	/**
   	 * Constructs a new Route.

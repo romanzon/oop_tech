@@ -46,12 +46,20 @@ public class GeoFeature {
 	// info can be found at:
 	//   http://docs.oracle.com/javase/8/docs/api/java/util/List.html
 	
+	/** location of the start,end of the geographic feature **/
+	private final GeoPoint m_start, m_end;					
 	
-	private final GeoPoint m_start, m_end;
-	private final double m_start_heading, m_end_heading;
-	private final ArrayList<GeoSegment> m_geo_segments;
-	private final String m_name;
-	private final double m_length;
+	/** direction of travel at the start,end of the geographic feature, in degrees **/
+	private final double m_start_heading, m_end_heading;	
+	
+	/** a sequence of segments that make up this geographic feature **/
+	private final ArrayList<GeoSegment> m_geo_segments;		
+	
+	/** name of geographic feature **/
+	private final String m_name;			
+	
+	/** total length of the geographic feature, in kilometers **/
+	private final double m_length;							
 	
 	/**
      * Constructs a new GeoFeature.

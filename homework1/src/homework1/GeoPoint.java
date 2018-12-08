@@ -63,8 +63,11 @@ public class GeoPoint {
 	// exact values are required. (Exact values are not required for length 
 	// and distance computations). Because of this, you should consider 
 	// using ints for your internal representation of GeoPoint. 
-
-  	private final int m_latitude;
+  	
+  	/** latitude measured in degrees **/
+  	private final int m_latitude; 
+  	
+  	/** longitude measured in degrees **/
   	private final int m_longitude;
 
   	/**

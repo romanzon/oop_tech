@@ -23,7 +23,9 @@ package homework1;
  * newline and should include no extra spaces other than those shown above.
  **/
 public class WalkingRouteFormatter extends RouteFormatter {
-	private static final float MIN_PER_KM = 20; // walking speed
+	
+	/** walking speed **/
+	private static final float MIN_PER_KM = 20; 
 	
 	
   	/**

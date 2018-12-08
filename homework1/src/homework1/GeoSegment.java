@@ -40,12 +40,21 @@ package homework1;
  * </pre>
  **/
 public class GeoSegment  {
-
-	private final String m_name;
+	
+	/** name of the geographic feature identified **/
+	private final String m_name;	
+	
+	/** first endpoint of the segment **/
 	private final GeoPoint m_p1;
-	private final GeoPoint m_p2;
-	private final double m_length;
-	private final double m_heading;
+	
+	/** second endpoint of the segment **/
+	private final GeoPoint m_p2;	
+	
+	/** straight-line distance between p1 and p2, in kilometers **/
+	private final double m_length;	
+	
+	/** compass heading from p1 to p2, in degrees **/
+	private final double m_heading;	
 	
   	/**
      * Constructs a new GeoSegment with the specified name and endpoints.
