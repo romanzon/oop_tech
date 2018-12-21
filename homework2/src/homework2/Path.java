@@ -64,4 +64,10 @@ public interface Path<N, P extends Path<N,P>>
      */
 	public Iterator<N> iterator();
 
+	
+  	/**
+  	 * @return Copy the object
+  	 * @requires object != null
+  	 */
+  	public P copy();
 }

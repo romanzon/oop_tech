@@ -1,8 +1,7 @@
 package homework2;
 
 /**
- * A WeightedNode class is a simple record type which contains a name
- * and a cost. 
+ * A WeightedNode class is a record type which contains a name, a cost, a color (and a XXX if needed)
  **/
 public class WeightedNode implements Comparable<WeightedNode> {
 	
@@ -24,6 +23,10 @@ public class WeightedNode implements Comparable<WeightedNode> {
 	private String color;
 	
 	
+	/**
+	 * How many back edges does the node contain 
+	 */
+	private int backEdges;
 	
   	/**
      * Creates a WeightedNode.
@@ -36,6 +39,7 @@ public class WeightedNode implements Comparable<WeightedNode> {
     	this.name = name;
       	this.cost = cost;
 		this.color = "White";
+		this.backEdges = 0;
   	}
 
   
@@ -69,7 +73,7 @@ public class WeightedNode implements Comparable<WeightedNode> {
 	 * @modifies this
 	 * @effects the color of the object
      */	
-	public void getColor(String color){
+	public void setColor(String color){
 		this.color = color;
 	}
 	
@@ -112,9 +116,9 @@ public class WeightedNode implements Comparable<WeightedNode> {
 	 * 		   object is respectively less than, equal to, or greater than
 	 *         the specified object .
 	 * 		   <p>
-     * 		   WeightedNodes are ordered lexicographically by their name.
-     * 		   When two nodes share a name, their ordering is determined by
-     * 		   the numeric ordering of their costs.
+     * 		   WeightedNodes are ordered by their numeric ordering of their costs.
+     * 		   When two nodes share a cost, their ordering is determined 
+     *         lexicographically by their nameic ordering.
      */
   	public int compareTo(WeightedNode o) {	
     	int diff_cost = cost - o.cost;
@@ -123,6 +127,32 @@ public class WeightedNode implements Comparable<WeightedNode> {
       	else
 			return diff_cost;
   	}
-
+  	
+  	
+  	/**
+  	 * @effects Increment back edges count
+  	 */
+  	public void incrementBackEdgesCount()
+  	{
+  		this.backEdges++;
+  	}
+  	
+  	
+  	/**
+  	 * @effects Clear the back edges count
+  	 */
+  	public void clearBackEdgeCounts()
+  	{
+  		this.backEdges = 0;
+  	}
+  	
+  	
+  	/**
+  	 * @return Get back edges count
+  	 */
+  	public int getBackEdgesCount()
+  	{
+  		return this.backEdges;
+  	}
 }
 

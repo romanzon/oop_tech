@@ -14,8 +14,7 @@ import java.util.*;
 public class TestDriver {
 
 	// String -> Graph: maps the names of graphs to the actual graph
-	// TODO: Parameterize the next line correctly.
-  	private final Map<String,          > graphs = new HashMap<>();
+  	private final Map<String, Graph<WeightedNode>> graphs = new HashMap<>();
   	// String -> WeightedNode: maps the names of nodes to the actual node
   	private final Map<String,WeightedNode> nodes = new HashMap<>();
 	private final BufferedReader input;
@@ -111,10 +110,8 @@ public class TestDriver {
 
   	private void createGraph(String graphName) {
   		
-  		//TODO: Insert your code here.
-  		
-  		// graphs.put(graphName, ___);
-  		// output.println(...);
+  		graphs.put(graphName, new Graph<WeightedNode>());
+  		output.println("created graph " + graphName);
 
   	}
  
@@ -132,12 +129,11 @@ public class TestDriver {
 
 
  	private void createNode(String nodeName, String cost) {
-
- 		// TODO: Insert your code here.
- 		
- 		// nodes.put(nodeName, ___);
- 		// output.println(...);
- 		
+ 		if (nodes.containsKey(nodeName))
+ 			throw new CommandException(nodeName + " has already existed ");
+ 			
+ 		nodes.put(nodeName, new WeightedNode(nodeName, Integer.parseInt(cost)));
+ 		output.println("create node " + nodeName + " with cost " + cost);
   	}
 	
 
@@ -155,12 +151,16 @@ public class TestDriver {
 
   	private void addNode(String graphName, String nodeName) {
 
-  		// TODO: Insert your code here.
-  		 
-  		// ___ = graphs.get(graphName);
-  		// ___ = nodes.get(nodeName);
-  		// output.println(...);
-  		
+		if (!this.graphs.containsKey(graphName))
+			throw new CommandException(graphName + " is not existed ");
+		
+		Graph<WeightedNode> graph = this.graphs.get(graphName);
+		WeightedNode node = this.nodes.get(nodeName);
+		if (graph.isNodeContained(node))
+			throw new CommandException(nodeName + " has already existed in " + graphName);
+		
+  		graph.addNode(node);
+  		output.println("add node " + nodeName + " to " + graphName);	
   	}
 
 
@@ -179,13 +179,27 @@ public class TestDriver {
 
 	private void addEdge(String graphName, String parentName, String childName) {
 		
-		// TODO: Insert your code here.
-		  
-		// ___ = graphs.get(graphName);
-		// ___ = nodes.get(parentName);
-		// ___ = nodes.get(childName);
-		// output.println(...);
+		if (!this.graphs.containsKey(graphName))
+			throw new CommandException(graphName + " is not existed ");
+		
+		if (!this.nodes.containsKey(parentName))
+			throw new CommandException(parentName + " is not existed ");		
 
+		if (!this.nodes.containsKey(childName))
+			throw new CommandException(childName + " is not existed ");
+		
+		Graph<WeightedNode> graph = this.graphs.get(graphName);
+		if (!graph.isNodeContained(this.nodes.get(parentName)))
+			throw new CommandException(parentName + " must be contained in " + graphName);
+		
+		if (!graph.isNodeContained(this.nodes.get(childName)))
+			throw new CommandException(childName + " must be contained in " + graphName);
+
+		if (graph.isEdgeContained(this.nodes.get(parentName), this.nodes.get(childName)))
+			throw new CommandException("edge has already been contained");
+		
+		this.graphs.get(graphName).addEdge(this.nodes.get(parentName), this.nodes.get(childName));
+		output.println("added edge from " + parentName + " to " + childName + " in " + graphName);
   	}
 
 
@@ -202,11 +216,26 @@ public class TestDriver {
 
   	private void listNodes(String graphName) {
   		
-  		// TODO: Insert your code here.
-  		   
-  		// ___ = graphs.get(graphName);
-  		// output.println(...);
-
+		if (!this.graphs.containsKey(graphName))
+			throw new CommandException(graphName + " is not existed ");
+		
+  		Graph<WeightedNode> graph = this.graphs.get(graphName);
+  		output.print(graphName + " contains:");
+		
+		// Sort the nodes' name
+		ArrayList<WeightedNode> nodes = new ArrayList<>(graph.getNodes());
+		ArrayList<String> nodesNames = new ArrayList<>();
+		for (WeightedNode node : nodes)
+		{
+			nodesNames.add(node.getName());
+		}
+		Collections.sort(nodesNames);
+		
+		for (String nodeName : nodesNames)
+		{
+			output.print(" " + nodeName);
+		}
+		output.print("\n");
   	}
 
 
@@ -224,12 +253,32 @@ public class TestDriver {
 
   	private void listChildren(String graphName, String parentName) {
 
-  		// TODO: Insert your code here.
-  		    
-  		// ___ = graphs.get(graphName);
-  		// ___ = nodes.get(parentName);
-  		// output.println(...);
-  		
+		if (!this.graphs.containsKey(graphName))
+			throw new CommandException(graphName + " is not existed ");
+		
+		if (!this.nodes.containsKey(parentName))
+			throw new CommandException(parentName + " is not existed ");
+
+		if (!this.graphs.get(graphName).isNodeContained(this.nodes.get(parentName)))
+			throw new CommandException(parentName + " must be contained in " + graphName);
+
+		output.print("the children of " + parentName + " in " + graphName + " are:");
+
+		// Get the children and sort them
+		Graph<WeightedNode> graph = this.graphs.get(graphName);
+		ArrayList<WeightedNode> children = graph.getChildren(nodes.get(parentName));
+		ArrayList<String> childrenNames = new ArrayList<>();
+		for (WeightedNode child : children)
+		{
+			childrenNames.add(child.getName());
+		}
+		Collections.sort(childrenNames);
+		
+		for (String childName : childrenNames)
+		{
+			output.print(" " + childName);
+		}
+		output.print("\n");
   	}
 
 
@@ -272,31 +321,144 @@ public class TestDriver {
 
   	private void findPath(String graphName, List<String> sourceArgs,
   						  List<String> destArgs) {
-  		
-  		// TODO: Insert your code here.
-  		   
-  		// ___ = graphs.get(graphName);
-  		// ___ = nodes.get(sourceArgs.get(i));
-  		// ___ = nodes.get(destArgs.get(i));
-  		// output.println(...);
+
+		if (!this.graphs.containsKey(graphName))
+			throw new CommandException(graphName + " is not existed ");
+		Graph<WeightedNode> graph = graphs.get(graphName);
+
+		// Find all possible paths
+		NodeCountingPath startNodes = null, endNodes = null;
+		for (String sourceArg : sourceArgs)
+		{
+			if (!this.nodes.containsKey(sourceArg))
+				throw new CommandException(sourceArg + " is not existed ");
+			if (startNodes == null)
+				startNodes = new NodeCountingPath(this.nodes.get(sourceArg));
+			else
+				startNodes = startNodes.extend(this.nodes.get(sourceArg));
+		}
+		for (String destArg : destArgs)
+		{
+			if (!this.nodes.containsKey(destArg))
+				throw new CommandException(destArg + " is not existed ");
+			if (endNodes == null)
+				endNodes = new NodeCountingPath(this.nodes.get(destArg));
+			else
+				endNodes = endNodes.extend(this.nodes.get(destArg));
+		}
 		
+		Path<WeightedNode, ?> shortestPath = PathFinder.FindShortestPath(graph, startNodes, endNodes);
+		if (shortestPath != null)
+		{
+			output.print("found path in " + graphName + ":");
+			
+			// Print path
+			Iterator<WeightedNode> iter = shortestPath.iterator();
+			while (iter.hasNext())
+				output.print(" " + iter.next().getName());
+			
+			// Print cost
+			output.print(" with cost " + Integer.toString((int) shortestPath.getCost()));	
+		}
+		else
+		{
+			output.print("no path found in " + graphName);
+		}
   	}
 	
+  	private void dfsAlgorithm(List<String> arguments) {
+    	if ((arguments.size() > 3) || (arguments.size() == 0))
+      		throw new CommandException(
+				"Bad arguments to listChildren: " + arguments);
+    	
+    	String graphName, sourceArg, destArg;
+    	switch (arguments.size())
+    	{
+    		case 2:
+    	    	graphName = arguments.get(0);
+    	    	sourceArg = arguments.get(1);
+    	    	dfsAlgorithm(graphName, sourceArg);
+    	    	break;
+    	    	
+    		case 3:
+    	    	graphName = arguments.get(0);
+    	    	sourceArg = arguments.get(1);
+    	    	destArg = arguments.get(2);
+    	    	dfsAlgorithm(graphName, sourceArg, destArg);
+    	    	break;
+    	    
+    	    default:
+          		throw new CommandException(
+        				"Bad arguments to dfsAlgorithm: " + arguments);    	    	
+    	}
+  	}
+  	
 	private void dfsAlgorithm(String graphName, String sourceArg,
 							  String destArg) {
-	// TODO: Insert you code here.			
-	// ___ = graphs.get(graphName);
-  	// ___ = nodes.get(sourceArgs);
-  	// ___ = nodes.get(destArgs);
-  	// output.println(...);
-	
+		if (!this.graphs.containsKey(graphName))
+			throw new CommandException(graphName + " is not existed ");
+		
+		if (!this.nodes.containsKey(sourceArg))
+			throw new CommandException(sourceArg + " is not existed ");
+
+		if (!this.nodes.containsKey(destArg))
+			throw new CommandException(destArg + " is not existed ");
+		
+		if (!this.graphs.get(graphName).isNodeContained(this.nodes.get(sourceArg)))
+			throw new CommandException(sourceArg + " must be contained in " + graphName);
+
+		if (!this.graphs.get(graphName).isNodeContained(this.nodes.get(destArg)))
+			throw new CommandException(destArg + " must be contained in " + graphName);
+		
+		Graph<WeightedNode> graph = this.graphs.get(graphName);
+		WeightedNode startNode = this.nodes.get(sourceArg);
+		WeightedNode endNode = this.nodes.get(destArg);
+		
+		DfsAlgorithm dfsAlgorithm = new DfsAlgorithm(graph);		
+		LinkedList<WeightedNode> path = dfsAlgorithm.DFS(startNode, endNode);
+		output.print("dfs algorithm output " + graphName + " " + sourceArg + " -> " + destArg + ":");
+		if (path != null)
+		{
+			for (WeightedNode node : path)
+			{
+				output.print(" " + node.getName());
+			}
+		}
+		else
+		{
+			output.print(" no path was found");
+		}
+		output.print("\n");
 	}
 	
 	private void dfsAlgorithm(String graphName, String sourceArg) {
-	// TODO: Insert you code here.	
-	// ___ = graphs.get(graphName);
-  	// ___ = nodes.get(sourceArgs);
-  	// output.println(...);	
+		if (!this.graphs.containsKey(graphName))
+			throw new CommandException(graphName + " is not existed ");
+		
+		if (!this.nodes.containsKey(sourceArg))
+			throw new CommandException(sourceArg + " is not existed ");
+		
+		if (!this.graphs.get(graphName).isNodeContained(this.nodes.get(sourceArg)))
+			throw new CommandException(sourceArg + " must be contained in " + graphName);
+		
+		Graph<WeightedNode> graph = this.graphs.get(graphName);
+		WeightedNode startNode = this.nodes.get(sourceArg);
+		
+		DfsAlgorithm dfsAlgorithm = new DfsAlgorithm(graph);		
+		LinkedList<WeightedNode> path = dfsAlgorithm.DFS(startNode);
+		output.print("dfs algorithm output " + graphName + " " + sourceArg + ":");
+		if (path != null)
+		{
+			for (WeightedNode node : path)
+			{
+				output.print(" " + node.getName());
+			}
+		}
+		else
+		{
+			output.print(" no path was found");
+		}
+		output.print("\n");
 	}
 	
 

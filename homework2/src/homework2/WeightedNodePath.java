@@ -10,6 +10,8 @@ import java.util.List;
  * <p>
  * A WeightedNodePath is immutable. A new WeightedNodePath is returned through
  * the extend path operation. 
+ * The main purpose of this class is to illustrate that there can be multiple
+ * implementations of Paths of WeightedNodes. 
  */
 public class WeightedNodePath implements Path<WeightedNode, WeightedNodePath> {
 
@@ -195,5 +197,24 @@ public class WeightedNodePath implements Path<WeightedNode, WeightedNodePath> {
   	 */
   	public WeightedNode getEnd(){
   		return node;
+  	}
+  	
+  	
+  	/**
+  	 * @return Copy the object
+  	 * @requires object != null
+  	 */
+  	public WeightedNodePath copy()
+  	{
+  		WeightedNodePath copiedPath = null;
+		Iterator<WeightedNode> iterPath = this.iterator();
+		while(iterPath.hasNext())
+		{
+			if (copiedPath == null)
+				copiedPath = new WeightedNodePath(iterPath.next());
+			else
+				copiedPath = copiedPath.extend(iterPath.next());
+		}
+		return copiedPath;
   	}
 }

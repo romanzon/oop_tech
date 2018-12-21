@@ -7,21 +7,19 @@ import java.util.List;
 
 /**
  * A NodeCountingPath characterizes a path of WeightedNodes. The cost for
- * a path is the number of WeightedNodes it contains; the cost of the
+ * a path is the number of WeightedNodes; the cost of the
  * WeightedNodes are ignored.
  * <p>
  * A NodeCountingPath is immutable. A new NodeCountingPath is returned
  * through the extend path operation.
  * <p>
- * The main purpose of this class is to illustrate that there can be multiple
- * implementations of Paths of WeightedNodes. 
  */
 public class NodeCountingPath implements Path<WeightedNode, NodeCountingPath> {
 
 	// RepInvariant:
   	//   (node != null) &&
-  	//   (path == null) ==> (cost == 1) &&
-  	//   (path != null) ==> (cost == 1 + path.cost)
+  	//   (path == null) ==> (cost == 1 + num of back edges) &&
+  	//   (path != null) ==> (cost == 1 + num of back edges + path.cost)
   	//
 
   	// Abstraction Function:
@@ -85,9 +83,9 @@ public class NodeCountingPath implements Path<WeightedNode, NodeCountingPath> {
     	this.path = path;
 
     	if (path != null)
-      		this.cost = 1 + path.cost;
+      		this.cost = 1 + path.cost + node.getBackEdgesCount();
     	else
-      		this.cost = 1;
+      		this.cost = 1 + node.getBackEdgesCount();
   	}
 
 	
@@ -200,5 +198,24 @@ public class NodeCountingPath implements Path<WeightedNode, NodeCountingPath> {
   	 */
   	public WeightedNode getEnd(){
   		return node;
+  	}
+  	
+  	
+  	/**
+  	 * @return Copy the object
+  	 * @requires object != null
+  	 */
+  	public NodeCountingPath copy()
+  	{
+  		NodeCountingPath copiedPath = null;
+		Iterator<WeightedNode> iterPath = this.iterator();
+		while(iterPath.hasNext())
+		{
+			if (copiedPath == null)
+				copiedPath = new NodeCountingPath(iterPath.next());
+			else
+				copiedPath = copiedPath.extend(iterPath.next());
+		}
+		return copiedPath;
   	}
 }
