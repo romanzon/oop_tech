@@ -48,8 +48,9 @@ public class DfsAlgorithm
 	
 	
 	/**
-	 * @return The path between the startNode and endNode
-	 * @requires startNode != null && endNode != null &&
+	 * @return The path between the startNode and endNode. 
+	 * 		   If endNode == null then the algorithm runs all over the graph from the startNode 
+	 * @requires startNode != null
 	 * 			 this.m_graph.isNodeContained(startNode) && this.m_graph.isNodeContained(endNode)
 	 */
 	public LinkedList<WeightedNode> DFS(WeightedNode startNode, WeightedNode endNode)
@@ -117,60 +118,9 @@ public class DfsAlgorithm
 		
 		DfsAlgorithm.Color(startNode, "Black");
 		
-		return false;
-	}
-	
-	
-	/**
-	 * @return All paths from the startNode
-	 * @requires startNode != null &&
-	 * 			 this.m_graph.isNodeContained(startNode)
-	 */
-	public LinkedList<WeightedNode> DFS(WeightedNode startNode) 
-	{
-		this.m_visited = new LinkedList<>();
-		
-		// Color all nodes to white
-		DfsAlgorithm.Color(this.m_graph.getNodes(), "White");
-		
-		this.colorPath(startNode);
-		
-		DfsAlgorithm.Color(this.m_graph.getNodes(), "White");
-		
-		return this.m_visited;
-	}
-	
-	
-	/**
-	 * @effects Color all paths from startNode
-	 * @requires startNode != null &&
-	 * 			 this.m_graph.isNodeContained(startNode)
-	 */
-	private void colorPath(WeightedNode startNode)
-	{
-		// The priority queue contains nodes with priority equal to the cost of the nodes. If
-		// two nodes shares the same cost, choose them by alphabetical order (higher one
-		// first). Otherwise, choose randomly
-		PriorityQueue<WeightedNode> childs = new PriorityQueue<>(Collections.reverseOrder());
-		childs.addAll(this.m_graph.getChildren(startNode));
-		
-		// add the starting Node to the visited linked list
-		this.m_visited.add(startNode);
-		
-		// each node is marked by one of three colors. color[v] - the color of node v
-		// white - an unvisited node
-		// gray  - a visited node
-		// black - a node whose adjacency list has been examined
-		// 		   completely (whose descendants were all searched).
-		
-		DfsAlgorithm.Color(startNode, "Grey");
-		
-		for (WeightedNode child : childs)
-		{
-			if (!this.m_visited.contains(child))
-				this.colorPath(child);
-		}
-		
-		DfsAlgorithm.Color(startNode, "Black");
+		if (endNode == null)
+			return true;	// When there is no endNode, the algorithm keeps running all over the graph 
+		else
+			return false;
 	}
 }

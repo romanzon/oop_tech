@@ -445,7 +445,7 @@ public class TestDriver {
 		WeightedNode startNode = this.nodes.get(sourceArg);
 		
 		DfsAlgorithm dfsAlgorithm = new DfsAlgorithm(graph);		
-		LinkedList<WeightedNode> path = dfsAlgorithm.DFS(startNode);
+		LinkedList<WeightedNode> path = dfsAlgorithm.DFS(startNode, null);
 		output.print("dfs algorithm output " + graphName + " " + sourceArg + ":");
 		if (path != null)
 		{
