@@ -266,17 +266,11 @@ public class TestDriver {
 
 		// Get the children and sort them
 		Graph<WeightedNode> graph = this.graphs.get(graphName);
-		ArrayList<WeightedNode> children = graph.getChildren(nodes.get(parentName));
-		ArrayList<String> childrenNames = new ArrayList<>();
+		PriorityQueue<WeightedNode> children = graph.getChildren(nodes.get(parentName));
+
 		for (WeightedNode child : children)
 		{
-			childrenNames.add(child.getName());
-		}
-		Collections.sort(childrenNames);
-		
-		for (String childName : childrenNames)
-		{
-			output.print(" " + childName);
+			output.print(" " + child.getName());
 		}
 		output.print("\n");
   	}

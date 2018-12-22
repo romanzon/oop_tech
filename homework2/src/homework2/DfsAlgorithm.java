@@ -1,17 +1,16 @@
 package homework2;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 
 public class DfsAlgorithm
 {
 	/** The visited node list **/
-	private LinkedList<WeightedNode> m_visited;
+	private LinkedList<WeightedNode> visited;
 	
 	/** The graph to apply the algorithm **/
-	private Graph<WeightedNode> m_graph; 
+	private Graph<WeightedNode> graph; 
 		
 	/**
 	 * @effects Find the path between startNode and endNode in the graph 
@@ -20,15 +19,15 @@ public class DfsAlgorithm
 	 */
 	public DfsAlgorithm(Graph<WeightedNode> graph)
 	{
-		this.m_graph = graph;
+		this.graph = graph;
 	}
 	
 	
 	/**
-	 * @effects Color the nodes
+	 * @modifies Color the nodes
 	 * @requires nodes != null
 	 */
-	private static void Color(ArrayList<WeightedNode> nodes, String color)
+	private static void Color(HashSet<WeightedNode> nodes, String color)
 	{
 		for (WeightedNode node : nodes)
 		{
@@ -38,7 +37,7 @@ public class DfsAlgorithm
 	
 
 	/**
-	 * @effects Color the nodes
+	 * @modifies Color the node
 	 * @requires node != null
 	 */
 	private static void Color(WeightedNode node, String color)
@@ -50,20 +49,21 @@ public class DfsAlgorithm
 	/**
 	 * @return The path between the startNode and endNode. 
 	 * 		   If endNode == null then the algorithm runs all over the graph from the startNode 
+	 * @modifies Color the graph nodes to white
 	 * @requires startNode != null
 	 * 			 this.m_graph.isNodeContained(startNode) && this.m_graph.isNodeContained(endNode)
 	 */
 	public LinkedList<WeightedNode> DFS(WeightedNode startNode, WeightedNode endNode)
 	{
-		this.m_visited = new LinkedList<>();
+		this.visited = new LinkedList<>();
 		
 		// Color all nodes to white
-		DfsAlgorithm.Color(this.m_graph.getNodes(), "White");
+		DfsAlgorithm.Color(this.graph.getNodes(), "White");
 		boolean doesPathExist = this.doesPathExist(startNode, endNode);
-		DfsAlgorithm.Color(this.m_graph.getNodes(), "White");
+		DfsAlgorithm.Color(this.graph.getNodes(), "White");
 		
 		if (doesPathExist)
-			return this.m_visited;
+			return this.visited;
 		else
 			return null;
 	}
@@ -79,11 +79,10 @@ public class DfsAlgorithm
 		// The priority queue contains nodes with priority equal to the cost of the nodes. If
 		// two nodes shares the same cost, choose them by alphabetical order (higher one
 		// first). Otherwise, choose randomly
-		PriorityQueue<WeightedNode> childs = new PriorityQueue<>(Collections.reverseOrder());
-		childs.addAll(this.m_graph.getChildren(startNode));
+		PriorityQueue<WeightedNode> children = this.graph.getChildren(startNode);
 		
 		// add the starting Node to the visited linked list
-		this.m_visited.add(startNode);
+		this.visited.add(startNode);
 		
 		// each node is marked by one of three colors. color[v] - the color of node v
 		// white - an unvisited node
@@ -96,7 +95,7 @@ public class DfsAlgorithm
 		// Clear back edges count before running 
 		startNode.clearBackEdgeCounts();
 		// Search for back edges
-		for (WeightedNode child : childs)
+		for (WeightedNode child : children)
 		{
 			if (child.getColor().equals("Grey"))
 			{	// Parent child. Increment back edge
@@ -107,7 +106,7 @@ public class DfsAlgorithm
 		if (startNode.equals(endNode))
 			return true;
 		
-		for (WeightedNode child : childs)
+		for (WeightedNode child : children)
 		{
 			if (child.getColor().equals("White"))
 			{	// Child that hasn't been visited
