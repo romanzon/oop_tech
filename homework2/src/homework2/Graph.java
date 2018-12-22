@@ -51,14 +51,7 @@ public class Graph<Node> {
 	 */
 	public boolean isNodeContained(Node node)
 	{
-		for (Node m_node : nodes) 
-		{
-			if (m_node.equals(node))
-			{
-				return true;
-			}
-		}
-		return false;
+		return this.nodes.contains(node);
 	}
 	
 	
@@ -68,15 +61,7 @@ public class Graph<Node> {
 	 */
 	public boolean isEdgeContained(Node parentNode, Node childNode)
 	{
-		for (Edge<Node> edge : edges) 
-		{
-			if (edge.getParent().equals(parentNode) &&
-				edge.getChild().equals(childNode))
-			{
-				return true;
-			}
-		}
-		return false;
+		return edges.contains(new Edge<Node>(parentNode, childNode));
 	}
 	
 
@@ -162,6 +147,22 @@ class Edge <Node>
 	{
 		return this.childNode;
 	}
+	
+	
+	/**
+	 * Standard equality operation.
+	 * @return true iff o.instaceOf(Edge) &&
+	 *         (this.parentNode.eqauls(o.getParent()) && (this.childNode == o.getChild()))
+	 */
+	public boolean equals(Object o) {
+    	if (o instanceof Edge<?>) 
+    	{
+      		Edge<?> other = (Edge<?>)o;
+      		return (this.parentNode.equals(other.getParent()) &&
+				    this.childNode.equals(other.getChild()));
+    	}
+    	return false;
+  	}
 	
 	
 	/**
