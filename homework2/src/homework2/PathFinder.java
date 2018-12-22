@@ -1,7 +1,6 @@
 package homework2;
 
 import java.util.Iterator;
-import java.util.LinkedList;
 
 public class PathFinder
 {
@@ -30,16 +29,7 @@ public class PathFinder
 			while (iterEndNodes.hasNext())
 			{
 				WeightedNode endNode = iterEndNodes.next();
-				LinkedList<WeightedNode> linkedPath = dfsAlgorithm.DFS(startNode, endNode);
-				Path<WeightedNode, ?> path = null;
-				
-				for (WeightedNode node : linkedPath)
-				{
-					if (path == null)
-						path = new NodeCountingPath(node);
-					else
-						path = path.extend(node);
-				}
+				Path<WeightedNode, ?> path = dfsAlgorithm.DFS(startNode, endNode);
 				
 				if (path != null)
 				{

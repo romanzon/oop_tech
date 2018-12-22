@@ -1,13 +1,12 @@
 package homework2;
 
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.PriorityQueue;
 
 public class DfsAlgorithm
 {
 	/** The visited node list **/
-	private LinkedList<WeightedNode> visited;
+	private NodeCountingPath visited;
 	
 	/** The graph to apply the algorithm **/
 	private Graph<WeightedNode> graph; 
@@ -53,16 +52,14 @@ public class DfsAlgorithm
 	 * @requires startNode != null
 	 * 			 this.m_graph.isNodeContained(startNode) && this.m_graph.isNodeContained(endNode)
 	 */
-	public LinkedList<WeightedNode> DFS(WeightedNode startNode, WeightedNode endNode)
+	public NodeCountingPath DFS(WeightedNode startNode, WeightedNode endNode)
 	{
-		this.visited = new LinkedList<>();
-		
 		// Color all nodes to white
 		DfsAlgorithm.Color(this.graph.getNodes(), "White");
 		boolean doesPathExist = this.doesPathExist(startNode, endNode);
 		DfsAlgorithm.Color(this.graph.getNodes(), "White");
 		
-		if (doesPathExist)
+		if ((doesPathExist) || (endNode == null))
 			return this.visited;
 		else
 			return null;
@@ -82,7 +79,10 @@ public class DfsAlgorithm
 		PriorityQueue<WeightedNode> children = this.graph.getChildren(startNode);
 		
 		// add the starting Node to the visited linked list
-		this.visited.add(startNode);
+		if (this.visited == null)
+			this.visited = new NodeCountingPath(startNode);
+		else
+			this.visited = this.visited.extend(startNode);
 		
 		// each node is marked by one of three colors. color[v] - the color of node v
 		// white - an unvisited node
@@ -117,9 +117,6 @@ public class DfsAlgorithm
 		
 		DfsAlgorithm.Color(startNode, "Black");
 		
-		if (endNode == null)
-			return true;	// When there is no endNode, the algorithm keeps running all over the graph 
-		else
-			return false;
+		return false;
 	}
 }

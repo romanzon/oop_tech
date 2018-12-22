@@ -409,13 +409,14 @@ public class TestDriver {
 		WeightedNode endNode = this.nodes.get(destArg);
 		
 		DfsAlgorithm dfsAlgorithm = new DfsAlgorithm(graph);		
-		LinkedList<WeightedNode> path = dfsAlgorithm.DFS(startNode, endNode);
+		Path<WeightedNode, ?> path = dfsAlgorithm.DFS(startNode, endNode);
 		output.print("dfs algorithm output " + graphName + " " + sourceArg + " -> " + destArg + ":");
 		if (path != null)
 		{
-			for (WeightedNode node : path)
+			Iterator<WeightedNode> iterPath = path.iterator();
+			while (iterPath.hasNext())
 			{
-				output.print(" " + node.getName());
+				output.print(" " + iterPath.next().getName());
 			}
 		}
 		else
@@ -439,13 +440,14 @@ public class TestDriver {
 		WeightedNode startNode = this.nodes.get(sourceArg);
 		
 		DfsAlgorithm dfsAlgorithm = new DfsAlgorithm(graph);		
-		LinkedList<WeightedNode> path = dfsAlgorithm.DFS(startNode, null);
+		Path<WeightedNode, ?> path = dfsAlgorithm.DFS(startNode, null);
 		output.print("dfs algorithm output " + graphName + " " + sourceArg + ":");
 		if (path != null)
 		{
-			for (WeightedNode node : path)
+			Iterator<WeightedNode> iterPath = path.iterator();
+			while (iterPath.hasNext())
 			{
-				output.print(" " + node.getName());
+				output.print(" " + iterPath.next().getName());
 			}
 		}
 		else
