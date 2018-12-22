@@ -1,7 +1,8 @@
 package homework2;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.PriorityQueue;
 
 public class Graph<Node> {
 	
@@ -17,7 +18,6 @@ public class Graph<Node> {
 	 */
 	public Graph()
 	{
-	
 	}
 	
 	
@@ -85,21 +85,21 @@ public class Graph<Node> {
 	/**
 	 * @return All graph nodes
 	 */
-	public ArrayList<Node> getNodes()
+	public HashSet<Node> getNodes()
 	{
-		return new ArrayList<Node>(this.nodes);
+		return this.nodes;
 	}
 	
 	
 	/**
-	 * @effects Get all parent's children names
+	 * @effects Get all parent's children in a reversed order
 	 * @requires parentNodeName != null &&
 	 * 			 this.isNodeContained(parentNodeName) &&
 	 * 			 this.isEdgeContained(parentNodeName)
 	 */	
-	public ArrayList<Node> getChildren(Node parentNode)
+	public PriorityQueue<Node> getChildren(Node parentNode)
 	{
-		ArrayList<Node> children = new ArrayList<>();
+		PriorityQueue<Node> children = new PriorityQueue<>(Collections.reverseOrder());
 		for (Edge<Node> edge : edges) 
 		{
 			if (edge.getParent().equals(parentNode))
