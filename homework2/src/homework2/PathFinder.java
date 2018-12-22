@@ -1,6 +1,6 @@
 package homework2;
 
-import java.util.Iterator;
+import java.util.ArrayList;
 
 public class PathFinder
 {
@@ -16,19 +16,15 @@ public class PathFinder
 	 * @return The shortest path between the start nodes and end nodes
 	 * @requires startNode != null && endNode != null 
 	 */
-	static public Path<WeightedNode, ?> FindShortestPath(Graph<WeightedNode> graph, Path<WeightedNode, ?> startNodes, Path<WeightedNode,?> endNodes)
+	static public Path<WeightedNode, ?> FindShortestPath(Graph<WeightedNode> graph, ArrayList<WeightedNode> startNodes, ArrayList<WeightedNode> endNodes)
 	{
 		DfsAlgorithm dfsAlgorithm = new DfsAlgorithm(graph);
 		
-		Iterator<WeightedNode> iterStartNodes = startNodes.iterator();	// Get all start nodes
-		Iterator<WeightedNode> iterEndNodes = endNodes.iterator();	// Get all end nodes
 		Path<WeightedNode, ?> shortestPath = null;
-		while (iterStartNodes.hasNext())
+		for (WeightedNode startNode : startNodes)
 		{
-			WeightedNode startNode = iterStartNodes.next();
-			while (iterEndNodes.hasNext())
+			for (WeightedNode endNode : startNodes)
 			{
-				WeightedNode endNode = iterEndNodes.next();
 				Path<WeightedNode, ?> path = dfsAlgorithm.DFS(startNode, endNode);
 				
 				if (path != null)

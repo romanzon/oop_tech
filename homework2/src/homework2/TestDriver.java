@@ -321,24 +321,20 @@ public class TestDriver {
 		Graph<WeightedNode> graph = graphs.get(graphName);
 
 		// Find all possible paths
-		NodeCountingPath startNodes = null, endNodes = null;
+		ArrayList<WeightedNode> startNodes = new ArrayList<>();
+		ArrayList<WeightedNode> endNodes = new ArrayList<>();
 		for (String sourceArg : sourceArgs)
 		{
+			
 			if (!this.nodes.containsKey(sourceArg))
 				throw new CommandException(sourceArg + " is not existed ");
-			if (startNodes == null)
-				startNodes = new NodeCountingPath(this.nodes.get(sourceArg));
-			else
-				startNodes = startNodes.extend(this.nodes.get(sourceArg));
+			startNodes.add(this.nodes.get(sourceArg));
 		}
 		for (String destArg : destArgs)
 		{
 			if (!this.nodes.containsKey(destArg))
 				throw new CommandException(destArg + " is not existed ");
-			if (endNodes == null)
-				endNodes = new NodeCountingPath(this.nodes.get(destArg));
-			else
-				endNodes = endNodes.extend(this.nodes.get(destArg));
+			startNodes.add(this.nodes.get(destArg));
 		}
 		
 		Path<WeightedNode, ?> shortestPath = PathFinder.FindShortestPath(graph, startNodes, endNodes);
