@@ -65,7 +65,7 @@ public class TestDriver {
       		}
     	}
 
-    	output.flush();
+		output.flush();
   	}
 
 
@@ -133,7 +133,7 @@ public class TestDriver {
  			throw new CommandException(nodeName + " has already existed ");
  			
  		nodes.put(nodeName, new WeightedNode(nodeName, Integer.parseInt(cost)));
- 		output.println("create node " + nodeName + " with cost " + cost);
+ 		output.println("created node " + nodeName + " with cost " + cost);
   	}
 	
 
@@ -160,7 +160,7 @@ public class TestDriver {
 			throw new CommandException(nodeName + " has already existed in " + graphName);
 		
   		graph.addNode(node);
-  		output.println("add node " + nodeName + " to " + graphName);	
+  		output.println("added node " + nodeName + " to " + graphName);	
   	}
 
 
@@ -235,7 +235,7 @@ public class TestDriver {
 		{
 			output.print(" " + nodeName);
 		}
-		output.print("\n");
+		output.println();
   	}
 
 
@@ -272,7 +272,7 @@ public class TestDriver {
 		{
 			output.print(" " + child.getName());
 		}
-		output.print("\n");
+		output.println();
   	}
 
 
@@ -334,7 +334,7 @@ public class TestDriver {
 		{
 			if (!this.nodes.containsKey(destArg))
 				throw new CommandException(destArg + " is not existed ");
-			startNodes.add(this.nodes.get(destArg));
+			endNodes.add(this.nodes.get(destArg));
 		}
 		
 		Path<WeightedNode, ?> shortestPath = PathFinder.FindShortestPath(graph, startNodes, endNodes);
@@ -354,6 +354,7 @@ public class TestDriver {
 		{
 			output.print("no path found in " + graphName);
 		}
+		output.println();
   	}
 	
   	private void dfsAlgorithm(List<String> arguments) {
@@ -419,7 +420,7 @@ public class TestDriver {
 		{
 			output.print(" no path was found");
 		}
-		output.print("\n");
+		output.println();
 	}
 	
 	private void dfsAlgorithm(String graphName, String sourceArg) {
@@ -450,7 +451,7 @@ public class TestDriver {
 		{
 			output.print(" no path was found");
 		}
-		output.print("\n");
+		output.println();
 	}
 	
 

@@ -54,6 +54,7 @@ public class DfsAlgorithm
 	 */
 	public NodeCountingPath DFS(WeightedNode startNode, WeightedNode endNode)
 	{
+		this.visited = null;
 		// Color all nodes to white
 		DfsAlgorithm.Color(this.graph.getNodes(), "White");
 		boolean doesPathExist = this.doesPathExist(startNode, endNode);

@@ -23,7 +23,7 @@ public class PathFinder
 		Path<WeightedNode, ?> shortestPath = null;
 		for (WeightedNode startNode : startNodes)
 		{
-			for (WeightedNode endNode : startNodes)
+			for (WeightedNode endNode : endNodes)
 			{
 				Path<WeightedNode, ?> path = dfsAlgorithm.DFS(startNode, endNode);
 				
