@@ -1,0 +1,39 @@
+# Test exceptions
+
+# Create two identical nodes - a,a
+created node a with cost 10
+Exception: homework2.CommandException: a has already existed
+created node b with cost 1
+
+# Add the same node to the graph
+created graph g
+added node a to g
+added node b to g
+Exception: homework2.CommandException: b has already existed in g
+
+# Add non existed node
+Exception: homework2.CommandException: c is not existed
+
+# Add to a non existed graph
+Exception: homework2.CommandException: g1 is not existed
+
+# Add the same edge to the graph
+added edge from a to b in g
+added edge from a to b in g
+
+# Add edge of non existed nodes
+Exception: homework2.CommandException: c is not existed
+Exception: homework2.CommandException: c is not existed
+
+# Add edge to non existed graph
+Exception: homework2.CommandException: g1 is not existed
+
+# Print nodes
+g contains: a b
+
+# Print nodes of a non existed graph
+Exception: homework2.CommandException: g1 is not existed
+
+# Print children of non existed node and a graph
+Exception: homework2.CommandException: c is not existed
+Exception: homework2.CommandException: g1 is not existed

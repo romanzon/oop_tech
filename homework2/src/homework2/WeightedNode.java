@@ -1,7 +1,7 @@
 package homework2;
 
 /**
- * A WeightedNode class is a record type which contains a name, a cost, a color (and a XXX if needed)
+ * A WeightedNode class is a record type which contains a name, a cost, a color
  **/
 public class WeightedNode implements Comparable<WeightedNode> {
 	

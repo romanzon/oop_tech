@@ -130,7 +130,7 @@ public class TestDriver {
 
  	private void createNode(String nodeName, String cost) {
  		if (nodes.containsKey(nodeName))
- 			throw new CommandException(nodeName + " has already existed ");
+ 			throw new CommandException(nodeName + " has already existed");
  			
  		nodes.put(nodeName, new WeightedNode(nodeName, Integer.parseInt(cost)));
  		output.println("created node " + nodeName + " with cost " + cost);
@@ -152,7 +152,10 @@ public class TestDriver {
   	private void addNode(String graphName, String nodeName) {
 
 		if (!this.graphs.containsKey(graphName))
-			throw new CommandException(graphName + " is not existed ");
+			throw new CommandException(graphName + " is not existed");
+
+		if (!this.nodes.containsKey(nodeName))
+			throw new CommandException(nodeName + " is not existed");	
 		
 		Graph<WeightedNode> graph = this.graphs.get(graphName);
 		WeightedNode node = this.nodes.get(nodeName);
@@ -180,13 +183,13 @@ public class TestDriver {
 	private void addEdge(String graphName, String parentName, String childName) {
 		
 		if (!this.graphs.containsKey(graphName))
-			throw new CommandException(graphName + " is not existed ");
+			throw new CommandException(graphName + " is not existed");
 		
 		if (!this.nodes.containsKey(parentName))
-			throw new CommandException(parentName + " is not existed ");		
+			throw new CommandException(parentName + " is not existed");		
 
 		if (!this.nodes.containsKey(childName))
-			throw new CommandException(childName + " is not existed ");
+			throw new CommandException(childName + " is not existed");
 		
 		Graph<WeightedNode> graph = this.graphs.get(graphName);
 		if (!graph.isNodeContained(this.nodes.get(parentName)))
@@ -217,7 +220,7 @@ public class TestDriver {
   	private void listNodes(String graphName) {
   		
 		if (!this.graphs.containsKey(graphName))
-			throw new CommandException(graphName + " is not existed ");
+			throw new CommandException(graphName + " is not existed");
 		
   		Graph<WeightedNode> graph = this.graphs.get(graphName);
   		output.print(graphName + " contains:");
@@ -254,10 +257,10 @@ public class TestDriver {
   	private void listChildren(String graphName, String parentName) {
 
 		if (!this.graphs.containsKey(graphName))
-			throw new CommandException(graphName + " is not existed ");
+			throw new CommandException(graphName + " is not existed");
 		
 		if (!this.nodes.containsKey(parentName))
-			throw new CommandException(parentName + " is not existed ");
+			throw new CommandException(parentName + " is not existed");
 
 		if (!this.graphs.get(graphName).isNodeContained(this.nodes.get(parentName)))
 			throw new CommandException(parentName + " must be contained in " + graphName);
@@ -317,7 +320,7 @@ public class TestDriver {
   						  List<String> destArgs) {
 
 		if (!this.graphs.containsKey(graphName))
-			throw new CommandException(graphName + " is not existed ");
+			throw new CommandException(graphName + " is not existed");
 		Graph<WeightedNode> graph = graphs.get(graphName);
 
 		// Find all possible paths
@@ -327,13 +330,13 @@ public class TestDriver {
 		{
 			
 			if (!this.nodes.containsKey(sourceArg))
-				throw new CommandException(sourceArg + " is not existed ");
+				throw new CommandException(sourceArg + " is not existed");
 			startNodes.add(this.nodes.get(sourceArg));
 		}
 		for (String destArg : destArgs)
 		{
 			if (!this.nodes.containsKey(destArg))
-				throw new CommandException(destArg + " is not existed ");
+				throw new CommandException(destArg + " is not existed");
 			endNodes.add(this.nodes.get(destArg));
 		}
 		
@@ -387,13 +390,13 @@ public class TestDriver {
 	private void dfsAlgorithm(String graphName, String sourceArg,
 							  String destArg) {
 		if (!this.graphs.containsKey(graphName))
-			throw new CommandException(graphName + " is not existed ");
+			throw new CommandException(graphName + " is not existed");
 		
 		if (!this.nodes.containsKey(sourceArg))
-			throw new CommandException(sourceArg + " is not existed ");
+			throw new CommandException(sourceArg + " is not existed");
 
 		if (!this.nodes.containsKey(destArg))
-			throw new CommandException(destArg + " is not existed ");
+			throw new CommandException(destArg + " is not existed");
 		
 		if (!this.graphs.get(graphName).isNodeContained(this.nodes.get(sourceArg)))
 			throw new CommandException(sourceArg + " must be contained in " + graphName);
@@ -425,10 +428,10 @@ public class TestDriver {
 	
 	private void dfsAlgorithm(String graphName, String sourceArg) {
 		if (!this.graphs.containsKey(graphName))
-			throw new CommandException(graphName + " is not existed ");
+			throw new CommandException(graphName + " is not existed");
 		
 		if (!this.nodes.containsKey(sourceArg))
-			throw new CommandException(sourceArg + " is not existed ");
+			throw new CommandException(sourceArg + " is not existed");
 		
 		if (!this.graphs.get(graphName).isNodeContained(this.nodes.get(sourceArg)))
 			throw new CommandException(sourceArg + " must be contained in " + graphName);

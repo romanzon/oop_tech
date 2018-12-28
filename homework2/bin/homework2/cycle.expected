@@ -1,0 +1,25 @@
+# Cyclic graph
+
+# Create three nodes - a,b,c
+created node a with cost 10
+created node b with cost 1
+created node c with cost 1
+
+# Create graph g and add the nodes
+created graph g
+added node a to g
+added node b to g
+added node c to g
+
+# Create edge - a->b->c->a
+added edge from a to b in g
+added edge from b to c in g
+added edge from c to a in g
+
+# Print nodes
+g contains: a b c
+
+# Print children
+the children of a in g are: b
+the children of b in g are: c
+the children of c in g are: a

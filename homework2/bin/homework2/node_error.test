@@ -1,0 +1,39 @@
+# Test exceptions
+
+# Create two identical nodes - a,a
+CreateNode a 10
+CreateNode a 1
+CreateNode b 1
+
+# Add the same node to the graph
+CreateGraph g
+AddNode g a
+AddNode g b
+AddNode g b
+
+# Add non existed node
+AddNode g c
+
+# Add to a non existed graph
+AddNode g1 a
+
+# Add the same edge to the graph
+AddEdge g a b
+AddEdge g a b
+
+# Add edge of non existed nodes
+AddEdge g a c
+AddEdge g c b
+
+# Add edge to non existed graph
+AddEdge g1 a b
+
+# Print nodes
+ListNodes g
+
+# Print nodes of a non existed graph
+ListNodes g1
+
+# Print children of non existed node and a graph
+ListChildren g c
+ListChildren g1 a
