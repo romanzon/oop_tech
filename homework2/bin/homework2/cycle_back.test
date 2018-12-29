@@ -1,0 +1,38 @@
+# Cyclic graph with back edges
+
+# Create three nodes - a,b,c
+CreateNode a 10
+CreateNode b 1
+CreateNode c 1 
+CreateNode d 2 
+
+# Create graph g and add the nodes
+CreateGraph g
+AddNode g a
+AddNode g b
+AddNode g c
+AddNode g d
+
+# Create edge - a->b->c->a. b-->d-->b.
+AddEdge g a b
+AddEdge g b c
+AddEdge g c a
+AddEdge g b d
+AddEdge g d b
+AddEdge g d c
+
+# Print nodes
+ListNodes g
+
+# Print children
+ListChildren g a
+ListChildren g b
+ListChildren g c
+ListChildren g d
+
+# Dfs Algorithm
+DfsAlgorithm g a c
+DfsAlgorithm g a d
+DfsAlgorithm g a
+
+FindPath g a -> c d

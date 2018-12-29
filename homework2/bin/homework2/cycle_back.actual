@@ -1,0 +1,38 @@
+# Cyclic graph with back edges
+
+# Create three nodes - a,b,c
+created node a with cost 10
+created node b with cost 1
+created node c with cost 1
+created node d with cost 2
+
+# Create graph g and add the nodes
+created graph g
+added node a to g
+added node b to g
+added node c to g
+added node d to g
+
+# Create edge - a->b->c->a. b-->d-->b.
+added edge from a to b in g
+added edge from b to c in g
+added edge from c to a in g
+added edge from b to d in g
+added edge from d to b in g
+added edge from d to c in g
+
+# Print nodes
+g contains: b c d a
+
+# Print children
+the children of a in g are: b
+the children of b in g are: d c
+the children of c in g are: a
+the children of d in g are: c b
+
+# Dfs Algorithm
+dfs algorithm output g a -> c: a b d c
+dfs algorithm output g a -> d: a b d
+dfs algorithm output g a: a b d c
+
+found path in g: a b d with cost 4

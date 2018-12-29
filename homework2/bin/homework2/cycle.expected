@@ -17,7 +17,7 @@ added edge from b to c in g
 added edge from c to a in g
 
 # Print nodes
-g contains: a b c
+g contains: b c a
 
 # Print children
 the children of a in g are: b

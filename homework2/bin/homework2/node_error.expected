@@ -19,7 +19,7 @@ Exception: homework2.CommandException: g1 is not existed
 
 # Add the same edge to the graph
 added edge from a to b in g
-added edge from a to b in g
+Exception: homework2.CommandException: edge has already been contained
 
 # Add edge of non existed nodes
 Exception: homework2.CommandException: c is not existed
@@ -29,7 +29,7 @@ Exception: homework2.CommandException: c is not existed
 Exception: homework2.CommandException: g1 is not existed
 
 # Print nodes
-g contains: a b
+g contains: b a
 
 # Print nodes of a non existed graph
 Exception: homework2.CommandException: g1 is not existed
