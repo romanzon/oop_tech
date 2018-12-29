@@ -62,6 +62,9 @@ public class GraphTests extends ScriptFileTests {
 	}
 	
 	
+	/**
+	 * @effects Run white boxes tests for DFS and PathFinder classes
+	 */
 	@Test
 	public void WhiteTestsDFS()
 	{
