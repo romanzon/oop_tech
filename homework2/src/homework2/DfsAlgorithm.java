@@ -1,6 +1,6 @@
 package homework2;
 
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.PriorityQueue;
 
 public class DfsAlgorithm
@@ -26,9 +26,9 @@ public class DfsAlgorithm
 	 * @modifies Color the nodes
 	 * @requires nodes != null
 	 */
-	private static void Color(HashSet<WeightedNode> nodes, String color)
+	private static void Color(HashMap<String, WeightedNode> nodes, String color)
 	{
-		for (WeightedNode node : nodes)
+		for (WeightedNode node : nodes.values())
 		{
 			node.setColor(color);
 		}
@@ -69,8 +69,9 @@ public class DfsAlgorithm
 	
 	/**
 	 * @return True if a path exists between startNode and endNode
-	 * @requires startNode != null && endNode != null &&
-	 * 			 this.m_graph.isNodeContained(startNode) && this.m_graph.isNodeContained(endNode)
+	 * @requires startNode != null &&
+	 * 			 this.m_graph.isNodeContained(startNode) && 
+	 * 			 (endNode == null || this.m_graph.isNodeContained(endNode))
 	 */
 	private boolean doesPathExist(WeightedNode startNode, WeightedNode endNode)
 	{
@@ -96,25 +97,27 @@ public class DfsAlgorithm
 		// Clear back edges count before running 
 		startNode.clearBackEdgeCounts();
 		// Search for back edges
-		for (WeightedNode child : children)
-		{
-			if (child.getColor().equals("Grey"))
-			{	// Parent child. Increment back edge
-				startNode.incrementBackEdgesCount();
-			}			
-		}
+		if (children != null)
+			for (WeightedNode child : children)
+				{
+					if (child.getColor().equals("Grey"))
+					{	// Parent child. Increment back edge
+						startNode.incrementBackEdgesCount();
+					}			
+				}
 		
 		if (startNode.equals(endNode))
 			return true;
 		
-		for (WeightedNode child : children)
-		{
-			if (child.getColor().equals("White"))
-			{	// Child that hasn't been visited
-				if (this.doesPathExist(child, endNode))
-					return true;
-			}		
-		}
+		if (children != null)
+			for (WeightedNode child : children)
+			{
+				if (child.getColor().equals("White"))
+				{	// Child that hasn't been visited
+					if (this.doesPathExist(child, endNode))
+						return true;
+				}		
+			}
 		
 		DfsAlgorithm.Color(startNode, "Black");
 		

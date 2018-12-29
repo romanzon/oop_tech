@@ -226,17 +226,12 @@ public class TestDriver {
   		output.print(graphName + " contains:");
 		
 		// Sort the nodes' name
-		ArrayList<WeightedNode> nodes = new ArrayList<>(graph.getNodes());
-		ArrayList<String> nodesNames = new ArrayList<>();
+		ArrayList<WeightedNode> nodes = new ArrayList<>(graph.getNodes().values());
+		Collections.sort(nodes);
+		
 		for (WeightedNode node : nodes)
 		{
-			nodesNames.add(node.getName());
-		}
-		Collections.sort(nodesNames);
-		
-		for (String nodeName : nodesNames)
-		{
-			output.print(" " + nodeName);
+			output.print(" " + node.getName());
 		}
 		output.println();
   	}
@@ -271,10 +266,9 @@ public class TestDriver {
 		Graph<WeightedNode> graph = this.graphs.get(graphName);
 		PriorityQueue<WeightedNode> children = graph.getChildren(nodes.get(parentName));
 
-		for (WeightedNode child : children)
-		{
-			output.print(" " + child.getName());
-		}
+		if (children != null)
+			for (WeightedNode child : children)
+				output.print(" " + child.getName());
 		output.println();
   	}
 

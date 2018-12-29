@@ -1,16 +1,16 @@
 package homework2;
 
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.PriorityQueue;
 
 public class Graph<Node> {
 	
 	/** A set of all graph's nodes **/
-	private HashSet<Node> nodes = new HashSet<>();
+	private HashMap<String, Node> nodes;
 	
 	/** A set of all graph's edges **/
-	private HashSet<Edge<Node>> edges = new HashSet<>();
+	private HashMap<Node, PriorityQueue<Node>> edges;
 	
 	
 	/**
@@ -18,6 +18,8 @@ public class Graph<Node> {
 	 */
 	public Graph()
 	{
+		nodes = new HashMap<>();
+		edges = new HashMap<>();
 	}
 	
 	
@@ -27,7 +29,7 @@ public class Graph<Node> {
 	 */
 	public void addNode(Node node)
 	{
-		this.nodes.add(node);
+		this.nodes.put(node.toString(), node);
 	}
 	
 	
@@ -41,7 +43,14 @@ public class Graph<Node> {
 	 */
 	public void addEdge(Node parentNode, Node childNode)
 	{
-		this.edges.add(new Edge<Node>(parentNode, childNode));
+		PriorityQueue<Node> nodes;
+		if (!this.isEdgeContained(parentNode))
+			nodes = new PriorityQueue<>(Collections.reverseOrder());
+		else
+			nodes = this.edges.get(parentNode);
+		
+		nodes.add(childNode);
+		this.edges.put(parentNode, nodes);
 	}
 	
 	
@@ -51,7 +60,7 @@ public class Graph<Node> {
 	 */
 	public boolean isNodeContained(Node node)
 	{
-		return this.nodes.contains(node);
+		return this.nodes.containsKey(node.toString());
 	}
 	
 	
@@ -61,7 +70,10 @@ public class Graph<Node> {
 	 */
 	public boolean isEdgeContained(Node parentNode, Node childNode)
 	{
-		return edges.contains(new Edge<Node>(parentNode, childNode));
+		if (!this.isEdgeContained(parentNode))
+			return false;
+		else
+			return this.edges.get(parentNode).contains(childNode);
 	}
 	
 
@@ -71,21 +83,14 @@ public class Graph<Node> {
 	 */
 	public boolean isEdgeContained(Node parentNode)
 	{
-		for (Edge<Node> edge : edges) 
-		{
-			if (edge.getParent().equals(parentNode))
-			{
-				return true;
-			}
-		}
-		return false;
+		return this.edges.containsKey(parentNode);
 	}
 	
 	
 	/**
 	 * @return All graph nodes
 	 */
-	public HashSet<Node> getNodes()
+	public HashMap<String, Node> getNodes()
 	{
 		return this.nodes;
 	}
@@ -99,80 +104,6 @@ public class Graph<Node> {
 	 */	
 	public PriorityQueue<Node> getChildren(Node parentNode)
 	{
-		PriorityQueue<Node> children = new PriorityQueue<>(Collections.reverseOrder());
-		for (Edge<Node> edge : edges) 
-		{
-			if (edge.getParent().equals(parentNode))
-				children.add(edge.getChild());
-		}
-		return children;
-	}
-}
-
-
-class Edge <Node>
-{
-	/** The parent node **/
-	private final Node parentNode;
-	
-	/** The child node **/
-	private final Node childNode;
-	
-	
-	/**
-	 * @effect Create a new edge between parent node and child node
-	 * @requires parentNode != null && childNode != null && parentNode != childNode
-	 */
-	public Edge(Node parentNode, Node childNode)
-	{
-		this.parentNode = parentNode;
-		this.childNode = childNode;
-		this.checkRep();
-	}
-	
-	
-	/**
-	 * @return The parent
-	 */
-	public Node getParent()
-	{
-		return this.parentNode;
-	}
-	
-	
-	/**
-	 * @return The child
-	 */
-	public Node getChild()
-	{
-		return this.childNode;
-	}
-	
-	
-	/**
-	 * Standard equality operation.
-	 * @return true iff o.instaceOf(Edge) &&
-	 *         (this.parentNode.eqauls(o.getParent()) && (this.childNode == o.getChild()))
-	 */
-	public boolean equals(Object o) {
-    	if (o instanceof Edge<?>) 
-    	{
-      		Edge<?> other = (Edge<?>)o;
-      		return (this.parentNode.equals(other.getParent()) &&
-				    this.childNode.equals(other.getChild()));
-    	}
-    	return false;
-  	}
-	
-	
-	/**
-	 * @effects Check that the parent doesn't equal to the child.
-	 * @throws AssertionError if representation invariant is violated.
-	 */
-	private void checkRep()
-	{
-		assert (this.parentNode != null) 				:"Parent musn't be null";
-		assert (this.childNode != null)					:"Child musn't be null";
-		//assert (!this.parentNode.equals(this.childNode)) :"Parent must be different from the child";
+		return this.edges.get(parentNode);
 	}
 }
