@@ -2,6 +2,9 @@ package homework4;
 
 import javax.swing.JTextArea;
 
+/**
+ * Responsible for update user chat when notified by observable
+ */
 public class ChatUpdater implements Observer{
 	
 	private JTextArea textArea;

@@ -19,13 +19,20 @@ import javax.swing.AbstractListModel;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
 import java.awt.Font;
+import javax.swing.JTextPane;
 
 public class Chat {
 
 	private final int NUM_OF_USERS = 4;
 	private JFrame frame;
+	
+	/** A list of all users panels **/
 	private ArrayList<JPanel> usersPanels = new ArrayList<JPanel>();
+	
+	/** A list of all users enter text **/
 	private ArrayList<Observable> usersEnterText = new ArrayList<Observable>();
+	
+	/** A list of all chat updaters **/
 	private ArrayList<Observer> chatUpdaters = new ArrayList<Observer>();
 	
 	/**
@@ -117,7 +124,7 @@ public class Chat {
 						
 		JList<String> list = new JList<String>();	
 		list.setModel(new AbstractListModel<String>() {
-			String[] values = new String[] {"Regular", "Bold", "Other"};
+			String[] values = new String[] {"Regular", "Bold", "Italic"};
 			public int getSize() {
 				return values.length;
 			}
@@ -127,19 +134,24 @@ public class Chat {
 		});
 		list.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent arg0) {
+				// Get the font style list index and set the selected font style
 				int index = list.getSelectedIndex();
-				Font font;
+				ChatFont chatFont;
 				switch (index)
 				{
+					default:
 					case 0:
-						font = new Font("Monospaced", Font.PLAIN, 13);
-						textArea.setFont(font);
+						chatFont = new ChatRegularFont();
 						break;
 					case 1:
-						font = new Font("Monospaced", Font.BOLD, 13);					
-						textArea.setFont(font);
+						chatFont = new ChatBoldFont();
 						break;
+					case 2:
+						chatFont = new ChatItalicFont();
+						break;						
 				}
+				Font currentFont = textArea.getFont();
+				textArea.setFont(chatFont.setFont(currentFont.getName(), currentFont.getSize()));
 			}
 		});
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
