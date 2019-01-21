@@ -8,4 +8,7 @@
 /homework2/bin/homework2/*.class
 /homework2/doc/
 /homework2/doc/homework2
+/homework2/*.pdf
+/homework2/~*.*
+/homework2/*.rar
 /homework4/bin
